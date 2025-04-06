@@ -47,6 +47,18 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
 
+  #state management
+  flutter_bloc: ^9.1.0
+
+  #comparing dart objects
+  equatable: ^2.0.7
+
+  #DI
+  get_it: ^8.0.3
+
+  #http request
+  dio: ^5.8.0+1
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

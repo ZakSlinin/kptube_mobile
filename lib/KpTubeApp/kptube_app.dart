@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kptube_mobile/routes/routes.dart';
-import 'package:kptube_mobile/theme/theme.dart';
+import 'package:kptube_mobile/config/routes/routes.dart';
+import 'package:kptube_mobile/config/theme/theme.dart';
 
 class KptubeApp extends StatelessWidget {
   const KptubeApp({super.key});
