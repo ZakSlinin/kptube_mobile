@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kptube_mobile/features/add_content/presentation/pages/add_content/add_content.dart';
-import 'package:kptube_mobile/features/library/library.dart';
-import 'package:kptube_mobile/features/music/music.dart';
-import 'package:kptube_mobile/features/profile/profile.dart';
+import 'package:kptube_mobile/features/library/presentation/pages/library/library.dart';
+import 'package:kptube_mobile/features/music/presentation/pages/music/music.dart';
+import 'package:kptube_mobile/features/profile/presentation/pages/profile/profile.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
