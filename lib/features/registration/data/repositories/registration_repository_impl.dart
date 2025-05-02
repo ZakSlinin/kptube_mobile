@@ -10,7 +10,7 @@ class RegistrationRepositoryImpl implements AbstractRegistrationRepository {
   RegistrationRepositoryImpl(this._registrationApi);
 
   @override
-  Future<User> registrationUser({
+  Future<User> registerUser({
     required String name,
     required String email,
     required String password,

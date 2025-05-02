@@ -1,9 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kptube_mobile/core/services/image_picker/image_picker.dart';
+import 'package:kptube_mobile/features/registration/bloc/registration_bloc.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -170,7 +172,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 const SizedBox(height: 15),
                 TextField(
                   decoration: InputDecoration(
-
                     labelText: 'Email:',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
@@ -251,6 +252,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       );
                       return;
                     }
+
+                    context.read<RegistrationBloc>().add(
+                      RegisterUserEvent(
+                        _nameController.text,
+                        _emailController.text,
+                        _passwordController.text,
+                        _selectedImageAvatar!,
+                        _selectedImageHeader!,
+                        User_ID,
+                      ),
+                    );
 
                     await Future.delayed(const Duration(milliseconds: 500));
 
