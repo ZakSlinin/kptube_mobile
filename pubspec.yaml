@@ -41,6 +41,7 @@ dependencies:
   #work with svg assets:
   flutter_svg: ^2.1.0
   image_picker: ^1.1.2
+  get_it: ^8.0.3
 
 dev_dependencies:
   flutter_test:
