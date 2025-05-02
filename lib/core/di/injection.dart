@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:kptube_mobile/features/registration/bloc/registration_bloc.dart';
 import 'package:kptube_mobile/features/registration/data/repositories/abstract_registration_repository.dart';
 import 'package:kptube_mobile/features/registration/data/repositories/registration_api.dart';
 import 'package:kptube_mobile/features/registration/data/repositories/registration_repository_impl.dart';
@@ -19,5 +20,9 @@ void setupDependencies() {
       getIt<RegistrationApi>(),
       getIt<RegistrationLocalData>(),
     ),
+  );
+
+  getIt.registerSingleton<RegistrationBloc>(
+    RegistrationBloc(getIt<AbstractRegistrationRepository>()),
   );
 }

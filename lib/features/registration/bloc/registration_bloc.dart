@@ -10,7 +10,7 @@ part 'registration_states.dart';
 class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
   final registrationRepository = getIt<AbstractRegistrationRepository>();
 
-  RegistrationBloc() : super(RegistrationInitial()) {
+  RegistrationBloc([abstractRegistrationRepository]) : super(RegistrationInitial()) {
     on<RegisterUserEvent>(_handleRegisterUser);
   }
 
