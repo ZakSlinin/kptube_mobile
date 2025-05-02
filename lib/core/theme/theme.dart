@@ -5,4 +5,17 @@ final darkTheme = ThemeData(
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: Color.fromARGB(255, 20, 20, 24),
   ),
+  textTheme: TextTheme(
+    bodyLarge: TextStyle(
+      color: Colors.white,
+      fontSize: 25,
+      fontWeight: FontWeight.bold,
+      fontFamily: 'Roboto',
+    ),
+    bodyMedium: TextStyle(color: Colors.white, fontSize: 20),
+  ),
+  inputDecorationTheme: InputDecorationTheme(
+    labelStyle: TextStyle(color: Colors.white, fontSize: 20),
+    contentPadding: EdgeInsets.all(4),
+  ),
 );
