@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:kptube_mobile/core/routes/routes.dart';
 import 'package:kptube_mobile/core/theme/theme.dart';
+
 
 class KptubeMobile extends StatelessWidget {
   const KptubeMobile({super.key});
@@ -9,8 +11,7 @@ class KptubeMobile extends StatelessWidget {
     return MaterialApp(
       title: 'KptubeMobile',
       theme: darkTheme,
-      routes: {
-      },
+      routes: routes,
     );
   }
 }

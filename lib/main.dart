@@ -1,19 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'core/app/kptube_mobile_app.dart';
+
 void main() {
   runApp(KptubeMobile());
-}
-
-class KptubeMobile extends StatelessWidget {
-  const KptubeMobile({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'KptubeMobile',
-      theme: ThemeData(),
-      routes: {
-      },
-    );
-  }
 }
