@@ -15,7 +15,7 @@ class RegistrationApi {
     required String password,
     required File avatar,
     required File header,
-    required int User_ID,
+    required String User_ID,
   }) async {
     final formData = FormData.fromMap({
       'name': name,

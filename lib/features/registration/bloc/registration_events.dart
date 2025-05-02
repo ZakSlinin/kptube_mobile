@@ -8,7 +8,7 @@ class RegisterUserEvent extends RegistrationEvent {
   final String password;
   final File avatar;
   final File header;
-  final int User_ID;
+  final String User_ID;
 
   RegisterUserEvent(
     this.name,

@@ -2,12 +2,15 @@ import 'dart:io';
 
 import 'package:kptube_mobile/features/registration/data/repositories/abstract_registration_repository.dart';
 import 'package:kptube_mobile/features/registration/data/repositories/registration_api.dart';
+import 'package:kptube_mobile/features/registration/data/repositories/registration_repository_local.dart';
 import 'package:kptube_mobile/features/registration/models/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegistrationRepositoryImpl implements AbstractRegistrationRepository {
   final RegistrationApi _registrationApi;
+  final RegistrationLocalData _localData;
 
-  RegistrationRepositoryImpl(this._registrationApi);
+  RegistrationRepositoryImpl(this._registrationApi, this._localData);
 
   @override
   Future<User> registerUser({
@@ -16,7 +19,7 @@ class RegistrationRepositoryImpl implements AbstractRegistrationRepository {
     required String password,
     required File avatar,
     required File header,
-    required int User_ID,
+    required String User_ID,
   }) async {
     try {
       final user = await _registrationApi.register(
@@ -25,8 +28,10 @@ class RegistrationRepositoryImpl implements AbstractRegistrationRepository {
         password: password,
         avatar: avatar,
         header: header,
-        User_ID: User_ID
+        User_ID: User_ID,
       );
+
+      _localData.saveRegistrationData(name, password, User_ID);
       return user;
     } catch (e) {
       throw RegistrationException('Failed to register: ${e.toString()}');

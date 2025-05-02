@@ -183,7 +183,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 const SizedBox(height: 15),
                 InkWell(
                   onTap: () async {
-                    final int User_ID = DateTime.now().millisecond;
+                    final String User_ID = (DateTime.now().millisecond).toString();
 
                     if (_nameController.text.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(

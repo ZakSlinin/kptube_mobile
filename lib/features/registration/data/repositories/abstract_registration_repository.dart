@@ -8,6 +8,6 @@ abstract class AbstractRegistrationRepository {
     required String password,
     required File avatar,
     required File header,
-    required int User_ID,
+    required String User_ID,
   });
 }
