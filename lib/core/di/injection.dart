@@ -5,6 +5,11 @@ import 'package:kptube_mobile/features/auth/data/repositories/abstract_auth_repo
 import 'package:kptube_mobile/features/auth/data/repositories/auth_api.dart';
 import 'package:kptube_mobile/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:kptube_mobile/features/auth/data/repositories/auth_repository_local.dart';
+import 'package:kptube_mobile/features/profile/bloc/profile_bloc.dart';
+import 'package:kptube_mobile/features/profile/data/repositories/abstract_profile_repository.dart';
+import 'package:kptube_mobile/features/profile/data/repositories/profile_api.dart';
+import 'package:kptube_mobile/features/profile/data/repositories/profile_repository_impl.dart';
+import 'package:kptube_mobile/features/profile/data/repositories/profile_repository_local.dart';
 import 'package:kptube_mobile/features/registration/bloc/registration_bloc.dart';
 import 'package:kptube_mobile/features/registration/data/repositories/abstract_registration_repository.dart';
 import 'package:kptube_mobile/features/registration/data/repositories/registration_api.dart';
@@ -39,5 +44,20 @@ void setupDependencies() {
     () => AuthRepositoryImpl(getIt<AuthUserApi>(), getIt<AuthLocalData>()),
   );
 
-  getIt.registerSingleton<AuthBloc>(AuthBloc(getIt<AbstractAuthRepository>()));
+  getIt.registerSingleton<AuthBloc>(
+    AuthBloc(authRepository: getIt<AbstractAuthRepository>()),
+  );
+
+  getIt.registerSingleton<MyProfileApi>(MyProfileApi(getIt<Dio>()));
+
+  getIt.registerSingleton<ProfileLocalData>(ProfileLocalData());
+
+  getIt.registerLazySingleton<AbstractProfileRepository>(
+    () =>
+        ProfileRepositoryImpl(getIt<MyProfileApi>(), getIt<ProfileLocalData>()),
+  );
+
+  getIt.registerSingleton<ProfileBloc>(
+    ProfileBloc(profileRepository: getIt<AbstractProfileRepository>()),
+  );
 }

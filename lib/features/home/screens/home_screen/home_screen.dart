@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kptube_mobile/features/home/widgets/bottom_navigation_bar/bottom_navigation_bar.dart';
+import 'package:kptube_mobile/features/profile/screens/profile_screen/profile_screen.dart';
 import 'package:kptube_mobile/features/registration/screens/registration_screen/registration_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -47,7 +48,10 @@ class _HomeScreenState extends State<HomeScreen> {
           const Scaffold(body: Center(child: Text('1'))),
           const Scaffold(body: Center(child: Text('2'))),
           const Scaffold(body: Center(child: Text('3'))),
-          const Scaffold(body: Center(child: Text('4'))),
+          Material(
+            type: MaterialType.transparency,
+            child: Theme(data: theme, child: const ProfileScreen()),
+          ),
           Material(
             type: MaterialType.transparency,
             child: Theme(data: theme, child: const RegistrationScreen()),

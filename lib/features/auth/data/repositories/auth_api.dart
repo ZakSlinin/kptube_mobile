@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:kptube_mobile/core/constants/constants.dart';
 import 'package:kptube_mobile/features/auth/models/auth_user.dart';
+import 'package:kptube_mobile/features/registration/models/user.dart';
 
 class AuthUserApi {
   final Dio _dio;
@@ -16,7 +17,7 @@ class AuthUserApi {
       );
       if (response.statusCode == 200 || response.statusCode == 201) {
         final user = AuthUser.fromJson(response.data);
-
+        final User_ID = user.User_ID;
         return user;
       } else {
         throw DioException(

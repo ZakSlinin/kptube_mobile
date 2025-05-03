@@ -60,6 +60,12 @@ class AuthScreen extends StatelessWidget {
                     child: Center(child: Text('Войти')),
                   ),
                   onTap: () {
+                    context.read<AuthBloc>().add(
+                      AuthUserEvent(
+                        _nameController.text,
+                        _passwordController.text,
+                      ),
+                    );
                     Navigator.pushNamed(context, '/');
                   },
                 ),
