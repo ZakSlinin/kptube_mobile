@@ -1,1 +1,2 @@
-const String registrationUserUrl = 'http://localhost:8000/create_user/';
+const String registrationUserUrl = 'https://kptube.kringeproduction.ru/create_user/';
+const String authenticationUserUrl = 'https://kptube.kringeproduction.ru/users/name=';

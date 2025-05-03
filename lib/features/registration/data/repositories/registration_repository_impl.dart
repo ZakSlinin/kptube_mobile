@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:kptube_mobile/features/registration/data/repositories/abstract_registration_repository.dart';
 import 'package:kptube_mobile/features/registration/data/repositories/registration_api.dart';
 import 'package:kptube_mobile/features/registration/data/repositories/registration_repository_local.dart';
@@ -21,7 +22,6 @@ class RegistrationRepositoryImpl implements AbstractRegistrationRepository {
     required File header,
     required String User_ID,
   }) async {
-    try {
       final user = await _registrationApi.register(
         name: name,
         email: email,
@@ -33,9 +33,6 @@ class RegistrationRepositoryImpl implements AbstractRegistrationRepository {
 
       _localData.saveRegistrationData(name, password, User_ID);
       return user;
-    } catch (e) {
-      throw RegistrationException('Failed to register: ${e.toString()}');
-    }
   }
 }
 

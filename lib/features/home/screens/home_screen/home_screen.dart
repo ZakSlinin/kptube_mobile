@@ -36,18 +36,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       body: PageView(
         controller: pageController,
         onPageChanged: (index) {
           setState(() => selectedPageIndex = index);
         },
-        children: const [
-          Scaffold(body: Center(child: Text('1'))),
-          Scaffold(body: Center(child: Text('2'))),
-          Scaffold(body: Center(child: Text('3'))),
-          Scaffold(body: Center(child: Text('4'))),
-          RegistrationScreen(),
+        children: [
+          const Scaffold(body: Center(child: Text('1'))),
+          const Scaffold(body: Center(child: Text('2'))),
+          const Scaffold(body: Center(child: Text('3'))),
+          const Scaffold(body: Center(child: Text('4'))),
+          Material(
+            type: MaterialType.transparency,
+            child: Theme(data: theme, child: const RegistrationScreen()),
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBarWidget(

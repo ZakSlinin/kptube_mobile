@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kptube_mobile/core/di/injection.dart';
 import 'package:kptube_mobile/core/services/image_picker/image_picker.dart';
+import 'package:kptube_mobile/features/auth/screens/auth_screen/auth_screen.dart';
 import 'package:kptube_mobile/features/registration/bloc/registration_bloc.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -299,7 +300,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           style: TextStyle(fontSize: 15),
                         ),
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => Material(
+                                type: MaterialType.transparency,
+                                child: Theme(data: theme, child: const AuthScreen()),
+                              ),),
+                            );
+                          },
                           child: const Text(
                             'Войти',
                             style: TextStyle(fontSize: 14),
