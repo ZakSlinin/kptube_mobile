@@ -20,135 +20,124 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 60, 16, 16),
-        child: Center(
-          child: Column(
-            children: [
-              BlocBuilder<ProfileBloc, ProfileState>(
-                builder: (context, state) {
-                  if (state is ProfileLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
+      body: BlocBuilder<ProfileBloc, ProfileState>(
+        builder: (context, state) {
+          if (state is ProfileLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-                  if (state is ProfileGetSuccess) {
-                    return Column(
-                      children: [
-                        Image.network(
-                          state.profile.header,
+          if (state is ProfileGetSuccess) {
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 60, 16, 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Image.network(
+                      state.profile.header,
+                      height: 200,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Container(
                           height: 200,
                           width: double.infinity,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return SvgPicture.asset(
-                              'assets/svg/Add_header.svg',
-                            );
+                          color: Colors.grey[200],
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 15),
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundImage: NetworkImage(state.profile.avatar),
+                          onBackgroundImageError: (exception, stackTrace) {
+                            print('Error loading avatar image: $exception');
+                            print('Stack trace: $stackTrace');
                           },
+                          child: state.profile.avatar.isEmpty
+                              ? SvgPicture.asset('assets/svg/Add_avatar.svg')
+                              : null,
                         ),
-                        const SizedBox(height: 15),
-                        Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 50,
-                              backgroundImage: NetworkImage(
-                                state.profile.avatar,
+                        const SizedBox(width: 15),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                state.profile.name ?? 'Без имени',
+                                style: Theme.of(context).textTheme.bodyLarge,
                               ),
-                            ),
-                            const SizedBox(width: 15),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              const SizedBox(height: 20),
+                              Text(
+                                'Подписчиков: ${state.profile.subscribers}',
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                              const SizedBox(height: 15),
+                              Row(
                                 children: [
-                                  Text(
-                                    state.profile.name ?? 'Без имени',
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.titleLarge,
+                                  InkWell(
+                                    onTap: () {
+                                      // TODO: Implement video tab
+                                    },
+                                    child: const Text('Видео'),
                                   ),
-                                  const SizedBox(height: 20),
-                                  Text(
-                                    'Подписчиков: ${state.profile.subscribers?.length ?? 0}',
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.bodyMedium,
-                                  ),
-                                  const SizedBox(height: 15),
-                                  Row(
-                                    children: [
-                                      InkWell(
-                                        onTap: () {
-                                          // TODO: Implement video tab
-                                        },
-                                        child: const Text('Видео'),
-                                      ),
-                                      const SizedBox(width: 15),
-                                      InkWell(
-                                        onTap: () {
-                                          // TODO: Implement settings
-                                        },
-                                        child: const Text('Настройки'),
-                                      ),
-                                    ],
+                                  const SizedBox(width: 15),
+                                  InkWell(
+                                    onTap: () {
+                                      // TODO: Implement settings
+                                    },
+                                    child: const Text('Настройки'),
                                   ),
                                 ],
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        Expanded(
-                          child: ListView.separated(
-                            itemBuilder: (context, index) {
-                              final video = state.profile.videos[index];
-                              return ListTile(
-                                title: Text(video.title),
-                                subtitle: Text(video.description ?? ''),
-                                leading: Image.network(
-                                  video.thumbnail,
-                                  width: 100,
-                                  height: 60,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return const Icon(Icons.video_library);
-                                  },
-                                ),
-                              );
-                            },
-                            separatorBuilder: (context, index) =>
-                                const Divider(),
-                            itemCount: state.profile.videos.length,
+                            ],
                           ),
                         ),
                       ],
-                    );
-                  }
-
-                  if (state is ProfileFailed) {
-                    return Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text('Ошибка загрузки профиля'),
-                          const SizedBox(height: 16),
-                          ElevatedButton(
-                            onPressed: () {
-                              context.read<ProfileBloc>().add(
-                                GetProfileEvent(),
-                              );
-                            },
-                            child: const Text('Повторить'),
-                          ),
-                        ],
+                    ),
+                    const SizedBox(height: 20),
+                    if (state.profile.videos.isNotEmpty) ...[
+                      const Text(
+                        'Мои видео',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    );
-                  }
-
-                  return const Center(child: CircularProgressIndicator());
-                },
+                      const SizedBox(height: 10),
+                    ],
+                  ],
+                ),
               ),
-            ],
-          ),
-        ),
+            );
+          }
+
+          if (state is ProfileFailed) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Ошибка загрузки профиля'),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.read<ProfileBloc>().add(GetProfileEvent());
+                    },
+                    child: const Text('Повторить'),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          return const Center(child: CircularProgressIndicator());
+        },
       ),
     );
   }
