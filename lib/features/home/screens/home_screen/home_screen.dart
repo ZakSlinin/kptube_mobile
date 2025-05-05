@@ -20,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     pageController = PageController(initialPage: 0);
+    context.read<ProfileBloc>().add(GetProfileEvent());
   }
 
   @override
@@ -52,8 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const Scaffold(body: Center(child: Text('1'))),
               const Scaffold(body: Center(child: Text('2'))),
               const Scaffold(body: Center(child: Text('3'))),
-              const Scaffold(body: Center(child: Text('4'))),
-              if (state is ProfileGetSuccess)
+              if (state is ProfileGetSuccess || state is ProfileLoading)
                 Material(
                   type: MaterialType.transparency,
                   child: Theme(data: theme, child: const ProfileScreen()),

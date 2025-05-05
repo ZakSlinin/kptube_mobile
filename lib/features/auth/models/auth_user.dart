@@ -7,9 +7,15 @@ class AuthUser {
 
   factory AuthUser.fromJson(Map<String, dynamic> json) {
     return AuthUser(
-      name: json['name'] as String,
-      password: json['password'] as String,
-      User_ID: json['User_ID'] as String,
+      name: json['name']?.toString(),
+      password: json['password']?.toString(),
+      User_ID: json['User_ID']?.toString(),
     );
+  }
+
+  static List<AuthUser> fromJsonList(List<dynamic> list) {
+    return list
+        .map((item) => AuthUser.fromJson(item as Map<String, dynamic>))
+        .toList();
   }
 }

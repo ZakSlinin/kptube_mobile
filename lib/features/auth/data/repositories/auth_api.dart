@@ -8,17 +8,40 @@ class AuthUserApi {
 
   AuthUserApi(this._dio);
 
-
-  Future<AuthUser> auth({required String name, required String password}) async {
+  Future<AuthUser> auth({
+    required String name,
+    required String password,
+  }) async {
     try {
       final response = await _dio.get(
         '$authenticationUserUrl$name',
         options: Options(headers: {'X-USERNAME': name, 'X-PASSWORD': password}),
       );
+
+      print('Auth response status: ${response.statusCode}');
+      print('Auth response data: ${response.data}');
+
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final user = AuthUser.fromJson(response.data);
-        final User_ID = user.User_ID;
-        return user;
+        if (response.data == null) {
+          throw DioException(
+            requestOptions: response.requestOptions,
+            message: 'Empty response from server',
+          );
+        }
+
+        // Если ответ приходит как список, берем первый элемент
+        final data = response.data is List
+            ? response.data.first
+            : response.data;
+
+        if (data == null) {
+          throw DioException(
+            requestOptions: response.requestOptions,
+            message: 'No user data found',
+          );
+        }
+
+        return AuthUser.fromJson(data);
       } else {
         throw DioException(
           requestOptions: response.requestOptions,

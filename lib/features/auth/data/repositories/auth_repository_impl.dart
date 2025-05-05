@@ -1,7 +1,6 @@
 import 'package:kptube_mobile/features/auth/data/repositories/abstract_auth_repository.dart';
 import 'package:kptube_mobile/features/auth/data/repositories/auth_api.dart';
 import 'package:kptube_mobile/features/auth/models/auth_user.dart';
-import 'package:kptube_mobile/features/registration/models/user.dart';
 
 import 'auth_repository_local.dart';
 

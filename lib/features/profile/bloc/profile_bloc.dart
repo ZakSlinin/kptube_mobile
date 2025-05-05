@@ -27,15 +27,19 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         return;
       }
 
+      print('Loading profile for user: $name');
       final profile = await profileRepository.getMyProfile(
         name: name,
-        avatar: '', // These will be populated from the API response
+        avatar: '',
         header: '',
         history: [],
         videos: '',
       );
+
+      print('Profile loaded successfully: ${profile.name}');
       emit(ProfileGetSuccess(profile));
     } catch (e) {
+      print('Failed to load profile: $e');
       emit(ProfileFailed(e.toString()));
     }
   }
