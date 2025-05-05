@@ -10,11 +10,20 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 2, vsync: this);
     context.read<ProfileBloc>().add(GetProfileEvent());
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
   @override
@@ -33,6 +42,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // user Header image
                     Image.network(
                       state.profile.header,
                       height: 200,
@@ -51,7 +61,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       },
                     ),
                     const SizedBox(height: 15),
+
+                    // Profile info row
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         CircleAvatar(
                           radius: 50,
@@ -65,6 +78,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               : null,
                         ),
                         const SizedBox(width: 15),
+
+                        // Profile info column
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,30 +93,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 'Подписчиков: ${state.profile.subscribers}',
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
-                              const SizedBox(height: 15),
-                              Row(
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      // TODO: Implement video tab
-                                    },
-                                    child: const Text('Видео'),
-                                  ),
-                                  const SizedBox(width: 15),
-                                  InkWell(
-                                    onTap: () {
-                                      // TODO: Implement settings
-                                    },
-                                    child: const Text('Настройки'),
-                                  ),
-                                ],
-                              ),
                             ],
                           ),
                         ),
                       ],
                     ),
+
                     const SizedBox(height: 20),
+
+                    // Tabs
+                    Column(
+                      children: [
+                        TabBar(
+                          controller: _tabController,
+                          tabs: const [
+                            Tab(text: 'Видео'),
+                            Tab(text: 'Настройки'),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 300,
+                          child: TabBarView(
+                            controller: _tabController,
+                            children: [
+                              Container(child: const Text('Контент видео')),
+                              Container(child: const Text('Настройки профиля')),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 20),
+
                     if (state.profile.videos.isNotEmpty) ...[
                       const Text(
                         'Мои видео',

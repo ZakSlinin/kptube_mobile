@@ -53,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const Scaffold(body: Center(child: Text('1'))),
               const Scaffold(body: Center(child: Text('2'))),
               const Scaffold(body: Center(child: Text('3'))),
+              const Scaffold(body: Center(child: Text('4'))),
               if (state is ProfileGetSuccess || state is ProfileLoading)
                 Material(
                   type: MaterialType.transparency,
