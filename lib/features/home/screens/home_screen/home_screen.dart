@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kptube_mobile/features/home/widgets/bottom_navigation_bar/bottom_navigation_bar.dart';
+import 'package:kptube_mobile/features/profile/bloc/profile_bloc.dart';
 import 'package:kptube_mobile/features/profile/screens/profile_screen/profile_screen.dart';
 import 'package:kptube_mobile/features/registration/screens/registration_screen/registration_screen.dart';
 
@@ -38,30 +40,37 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Scaffold(
-      body: PageView(
-        controller: pageController,
-        onPageChanged: (index) {
-          setState(() => selectedPageIndex = index);
-        },
-        children: [
-          const Scaffold(body: Center(child: Text('1'))),
-          const Scaffold(body: Center(child: Text('2'))),
-          const Scaffold(body: Center(child: Text('3'))),
-          Material(
-            type: MaterialType.transparency,
-            child: Theme(data: theme, child: const ProfileScreen()),
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      builder: (context, state) {
+        return Scaffold(
+          body: PageView(
+            controller: pageController,
+            onPageChanged: (index) {
+              setState(() => selectedPageIndex = index);
+            },
+            children: [
+              const Scaffold(body: Center(child: Text('1'))),
+              const Scaffold(body: Center(child: Text('2'))),
+              const Scaffold(body: Center(child: Text('3'))),
+              const Scaffold(body: Center(child: Text('4'))),
+              if (state is ProfileGetSuccess)
+                Material(
+                  type: MaterialType.transparency,
+                  child: Theme(data: theme, child: const ProfileScreen()),
+                )
+              else
+                Material(
+                  type: MaterialType.transparency,
+                  child: Theme(data: theme, child: const RegistrationScreen()),
+                ),
+            ],
           ),
-          Material(
-            type: MaterialType.transparency,
-            child: Theme(data: theme, child: const RegistrationScreen()),
+          bottomNavigationBar: BottomNavigationBarWidget(
+            selectedPageIndex: selectedPageIndex,
+            onPageSelected: _onPageSelected,
           ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBarWidget(
-        selectedPageIndex: selectedPageIndex,
-        onPageSelected: _onPageSelected,
-      ),
+        );
+      },
     );
   }
 }
