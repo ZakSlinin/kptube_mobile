@@ -10,7 +10,8 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProviderStateMixin {
+class _ProfileScreenState extends State<ProfileScreen>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -117,7 +118,39 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                             controller: _tabController,
                             children: [
                               Container(child: const Text('Контент видео')),
-                              Container(child: const Text('Настройки профиля')),
+                              Container(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    BlocBuilder<ProfileBloc, ProfileState>(
+                                      builder: (context, state) {
+                                        return InkWell(
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: Color.fromARGB(
+                                                255,
+                                                90,
+                                                90,
+                                                90,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            height: 65,
+                                            child: Center(child: Text('Выйти')),
+                                          ),
+                                          onTap: () {
+                                            context.read<ProfileBloc>().add(
+                                              LeaveProfileEvent(),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                    SizedBox(height: 30),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -159,7 +192,6 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
               ),
             );
           }
-
           return const Center(child: CircularProgressIndicator());
         },
       ),

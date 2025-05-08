@@ -11,6 +11,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   ProfileBloc({required this.profileRepository}) : super(ProfileInitial()) {
     on<GetProfileEvent>(_onGetProfile);
+    on<LeaveProfileEvent>(_onLeaveProfile);
   }
 
   Future<void> _onGetProfile(
@@ -42,5 +43,19 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       print('Failed to load profile: $e');
       emit(ProfileFailed(e.toString()));
     }
+  }
+
+  Future<void> _onLeaveProfile(
+    LeaveProfileEvent event,
+    Emitter<ProfileState> emit,
+  ) async {
+    try {
+      emit(ProfileLeaveLoading());
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+
+      emit(ProfileLeaveSuccess());
+    } catch (e) {}
   }
 }

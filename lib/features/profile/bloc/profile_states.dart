@@ -15,3 +15,9 @@ class ProfileGetSuccess extends ProfileState {
   final Profile profile;
   ProfileGetSuccess(this.profile);
 }
+
+class ProfileLeaveLoading extends ProfileState {}
+
+class ProfileLeaveSuccess extends ProfileState {}
+
+class ProfileLeaveFailed extends ProfileState {}

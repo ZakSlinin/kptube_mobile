@@ -9,3 +9,5 @@ class ProfileUserEvent extends ProfileEvent {
 
   ProfileUserEvent(this.name);
 }
+
+class LeaveProfileEvent extends ProfileEvent {}
