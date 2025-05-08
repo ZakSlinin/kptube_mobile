@@ -1,26 +1,15 @@
 import 'package:dio/dio.dart';
 import 'package:kptube_mobile/core/constants/constants.dart';
-import 'package:kptube_mobile/features/auth/models/auth_user.dart';
-import 'package:kptube_mobile/features/registration/models/user.dart';
+import 'package:kptube_mobile/features/main/models/Video.dart';
 
-class AuthUserApi {
+class MainScreenApi {
   final Dio _dio;
 
-  AuthUserApi(this._dio);
+  MainScreenApi(this._dio);
 
-  Future<AuthUser> auth({
-    required String name,
-    required String password,
-  }) async {
+  Future<Video> getVideos() async {
     try {
-      final response = await _dio.get(
-        '$authenticationUserUrl$name',
-        options: Options(headers: {'X-USERNAME': name, 'X-PASSWORD': password}),
-      );
-
-      print('Auth response status: ${response.statusCode}');
-      print('Auth response data: ${response.data}');
-
+      final response = await _dio.get('$getVideosUrl');
       if (response.statusCode == 200 || response.statusCode == 201) {
         if (response.data == null) {
           throw DioException(
@@ -36,11 +25,11 @@ class AuthUserApi {
         if (data == null) {
           throw DioException(
             requestOptions: response.requestOptions,
-            message: 'No user data found',
+            message: 'No videos data found',
           );
         }
 
-        return AuthUser.fromJson(data);
+        return Video.fromJson(data);
       } else {
         throw DioException(
           requestOptions: response.requestOptions,
