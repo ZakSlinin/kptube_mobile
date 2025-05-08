@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kptube_mobile/features/home/widgets/bottom_navigation_bar/bottom_navigation_bar.dart';
+import 'package:kptube_mobile/features/main/screens/main_screen/main_screen.dart';
 import 'package:kptube_mobile/features/profile/bloc/profile_bloc.dart';
 import 'package:kptube_mobile/features/profile/screens/profile_screen/profile_screen.dart';
 import 'package:kptube_mobile/features/registration/screens/registration_screen/registration_screen.dart';
@@ -50,7 +51,10 @@ class _HomeScreenState extends State<HomeScreen> {
               setState(() => selectedPageIndex = index);
             },
             children: [
-              const Scaffold(body: Center(child: Text('1'))),
+              Material(
+                type: MaterialType.transparency,
+                child: Theme(data: theme, child: MainScreen()),
+              ),
               const Scaffold(body: Center(child: Text('2'))),
               const Scaffold(body: Center(child: Text('3'))),
               const Scaffold(body: Center(child: Text('4'))),
@@ -58,6 +62,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 Material(
                   type: MaterialType.transparency,
                   child: Theme(data: theme, child: const ProfileScreen()),
+                )
+              else if (state is ProfileFailed)
+                Material(
+                  type: MaterialType.transparency,
+                  child: Theme(data: theme, child: const RegistrationScreen()),
                 )
               else
                 Material(

@@ -4,19 +4,34 @@ import 'package:kptube_mobile/core/di/injection.dart';
 import 'package:kptube_mobile/features/auth/bloc/auth_bloc.dart';
 import 'package:kptube_mobile/features/registration/screens/registration_screen/registration_screen.dart';
 
-class AuthScreen extends StatelessWidget {
+class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
+
+  @override
+  State<AuthScreen> createState() => _AuthScreenState();
+}
+
+class _AuthScreenState extends State<AuthScreen> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final TextEditingController _nameController = TextEditingController();
-    final TextEditingController _passwordController = TextEditingController();
 
     return BlocProvider(
       create: (context) => getIt<AuthBloc>(),
       child: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
+          if (!mounted) return;
+
           if (state is AuthSuccess) {
             Navigator.pushReplacementNamed(context, '/');
           } else if (state is AuthFailed) {
@@ -28,56 +43,59 @@ class AuthScreen extends StatelessWidget {
         child: GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
           child: Padding(
-            padding: EdgeInsets.fromLTRB(16, 60, 16, 16),
+            padding: const EdgeInsets.fromLTRB(16, 60, 16, 16),
             child: Center(
               child: Column(
                 children: [
-                  Center(
+                  const Center(
                     child: Text('Авторизация', style: TextStyle(fontSize: 30)),
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   TextField(
                     decoration: InputDecoration(
                       labelText: 'Имя:',
-                      labelStyle: TextStyle(color: Colors.white),
+                      labelStyle: const TextStyle(color: Colors.white),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
                     ),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     controller: _nameController,
                   ),
-                  SizedBox(height: 15),
+                  const SizedBox(height: 15),
                   TextField(
                     decoration: InputDecoration(
                       labelText: 'Пароль:',
-                      labelStyle: TextStyle(color: Colors.white),
+                      labelStyle: const TextStyle(color: Colors.white),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
                     ),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     controller: _passwordController,
                   ),
-                  SizedBox(height: 300),
+                  const SizedBox(height: 300),
                   BlocBuilder<AuthBloc, AuthState>(
                     builder: (context, state) {
                       return InkWell(
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 90, 90, 90),
+                            color: const Color.fromARGB(255, 90, 90, 90),
                             borderRadius: BorderRadius.circular(15),
                           ),
                           height: 65,
                           child: Center(
                             child: state is AuthLoading
-                                ? CircularProgressIndicator(color: Colors.white)
-                                : Text('Войти'),
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : const Text('Войти'),
                           ),
                         ),
                         onTap: state is AuthLoading
                             ? null
                             : () {
+                                if (!mounted) return;
                                 context.read<AuthBloc>().add(
                                   AuthUserEvent(
                                     _nameController.text,
@@ -88,15 +106,19 @@ class AuthScreen extends StatelessWidget {
                       );
                     },
                   ),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text('нет аккаунта?', style: TextStyle(fontSize: 15)),
+                        const Text(
+                          'нет аккаунта?',
+                          style: TextStyle(fontSize: 15),
+                        ),
                         InkWell(
                           onTap: () {
+                            if (!mounted) return;
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
@@ -110,7 +132,7 @@ class AuthScreen extends StatelessWidget {
                               ),
                             );
                           },
-                          child: Text(
+                          child: const Text(
                             'Создать аккаунт',
                             style: TextStyle(fontSize: 14),
                           ),

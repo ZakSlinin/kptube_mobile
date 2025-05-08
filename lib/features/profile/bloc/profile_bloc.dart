@@ -19,11 +19,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     Emitter<ProfileState> emit,
   ) async {
     try {
+      print('Starting profile loading...');
       emit(ProfileLoading());
       final prefs = await SharedPreferences.getInstance();
       final name = prefs.getString('name');
 
+      print('Retrieved name from SharedPreferences: $name');
+
       if (name == null) {
+        print('No name found in SharedPreferences, user not authenticated');
         emit(ProfileFailed('User not authenticated'));
         return;
       }
@@ -38,6 +42,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       );
 
       print('Profile loaded successfully: ${profile.name}');
+      print('Profile details:');
+      print('- Avatar: ${profile.avatar}');
+      print('- Header: ${profile.header}');
+      print('- Videos count: ${profile.videos.length}');
+      print('- Subscribers: ${profile.subscribers}');
+
       emit(ProfileGetSuccess(profile));
     } catch (e) {
       print('Failed to load profile: $e');
