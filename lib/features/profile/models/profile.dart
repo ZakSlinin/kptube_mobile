@@ -47,21 +47,6 @@ class Profile {
   }
 }
 
-class Video {
-  final String title;
-  final String? description;
-  final String videoUrl;
-
-  Video({required this.title, this.description, required this.videoUrl});
-
-  factory Video.fromJson(Map<String, dynamic> json) {
-    return Video(
-      title: json['title'] as String,
-      description: json['description'] as String?,
-      videoUrl: json['video_url'] as String,
-    );
-  }
-}
 
 String fixUrl(String url) {
   print('Original URL: $url');
