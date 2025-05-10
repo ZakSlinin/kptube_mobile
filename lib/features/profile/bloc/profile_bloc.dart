@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kptube_mobile/features/profile/data/repositories/abstract_profile_repository.dart';
 import 'package:kptube_mobile/features/profile/models/profile.dart';
+import 'package:kptube_mobile/features/profile/models/video.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'profile_events.dart';
@@ -45,7 +46,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       print('Profile details:');
       print('- Avatar: ${profile.avatar}');
       print('- Header: ${profile.header}');
-      print('- Videos count: ${profile.videos.length}');
+      print('- Videos count: ${profile.videoIds.length}');
       print('- Subscribers: ${profile.subscribers}');
 
       emit(ProfileGetSuccess(profile));
@@ -66,6 +67,17 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       await prefs.clear();
 
       emit(ProfileLeaveSuccess());
-    } catch (e) {}
+    } catch (e) {
+      emit(ProfileLeaveFailed());
+    }
+  }
+
+  Future<List<ProfileVideo>> getVideos(String username) async {
+    try {
+      return await profileRepository.getVideos(username);
+    } catch (e) {
+      print('Failed to load videos: $e');
+      rethrow;
+    }
   }
 }

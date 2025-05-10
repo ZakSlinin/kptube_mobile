@@ -2,6 +2,7 @@ import 'package:kptube_mobile/features/profile/data/repositories/abstract_profil
 import 'package:kptube_mobile/features/profile/data/repositories/profile_api.dart';
 import 'package:kptube_mobile/features/profile/data/repositories/profile_repository_local.dart';
 import 'package:kptube_mobile/features/profile/models/profile.dart';
+import 'package:kptube_mobile/features/profile/models/video.dart';
 
 class ProfileRepositoryImpl implements AbstractProfileRepository {
   final MyProfileApi _myProfileApi;
@@ -27,6 +28,15 @@ class ProfileRepositoryImpl implements AbstractProfileRepository {
         videos: videos,
       );
       return myProfile;
+    } catch (e) {
+      throw ProfileException(e.toString());
+    }
+  }
+
+  @override
+  Future<List<ProfileVideo>> getVideos(String username) async {
+    try {
+      return await _myProfileApi.getVideos(username);
     } catch (e) {
       throw ProfileException(e.toString());
     }

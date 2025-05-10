@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:kptube_mobile/features/profile/models/video.dart';
+
 class Profile {
   final String? name;
   final String avatar;
   final String header;
   final List<dynamic> history;
-  final List<Video> videos;
+  final List<String> videoIds;
   final int subscribers;
   final String? User_ID;
   final bool isEmailVerified;
@@ -17,7 +19,7 @@ class Profile {
     required this.avatar,
     required this.header,
     required this.history,
-    required this.videos,
+    required this.videoIds,
     required this.subscribers,
     this.User_ID,
     required this.isEmailVerified,
@@ -31,12 +33,9 @@ class Profile {
       avatar: fixUrl(json['avatar'] as String? ?? ''),
       header: fixUrl(json['header'] as String? ?? ''),
       history: json['history'] as List<dynamic>? ?? [],
-      videos: (json['videos'] as String? ?? '')
+      videoIds: (json['videos'] as String? ?? '')
           .split(',')
           .where((id) => id.isNotEmpty)
-          .map(
-            (id) => Video(title: 'Video $id', description: null, videoUrl: ''),
-          )
           .toList(),
       subscribers: json['subscribers'] as int? ?? 0,
       User_ID: json['User_ID']?.toString(),
@@ -46,7 +45,6 @@ class Profile {
     );
   }
 }
-
 
 String fixUrl(String url) {
   print('Original URL: $url');

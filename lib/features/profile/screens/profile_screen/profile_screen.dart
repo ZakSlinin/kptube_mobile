@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kptube_mobile/features/profile/bloc/profile_bloc.dart';
+import 'package:kptube_mobile/features/profile/models/video.dart';
+import 'package:kptube_mobile/features/profile/widgets/video_grid.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -13,6 +15,10 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  List<ProfileVideo>? _videos;
+  bool _isLoading = false;
+  String? _error;
+  String? _currentUsername;
 
   @override
   void initState() {
@@ -27,6 +33,47 @@ class _ProfileScreenState extends State<ProfileScreen>
     super.dispose();
   }
 
+  Future<void> _loadVideos(String username) async {
+    print('Loading videos for username: $username');
+    if (username.isEmpty) {
+      print('Username is empty, setting empty videos list');
+      setState(() {
+        _videos = [];
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+    print('Started loading videos');
+
+    try {
+      final videos = await context.read<ProfileBloc>().getVideos(username);
+      print('Successfully loaded ${videos.length} videos');
+      if (mounted) {
+        setState(() {
+          _videos = videos;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      print('Error loading videos: $e');
+      if (mounted) {
+        setState(() {
+          _error = 'Failed to load videos: $e';
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  void _onVideoTap(ProfileVideo video) {
+    // TODO: Implement video playback
+    print('Video tapped: ${video.Video_ID}');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,13 +84,18 @@ class _ProfileScreenState extends State<ProfileScreen>
           }
 
           if (state is ProfileGetSuccess) {
+            if (_currentUsername != state.profile.name) {
+              _currentUsername = state.profile.name;
+              Future.microtask(() => _loadVideos(state.profile.name ?? ''));
+            }
+
             return SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(16, 60, 16, 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // user Header image
+                    // Header
                     Image.network(
                       state.profile.header,
                       height: 200,
@@ -63,7 +115,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                     ),
                     const SizedBox(height: 15),
 
-                    // Profile info row
+                    // Profile info
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -117,37 +169,60 @@ class _ProfileScreenState extends State<ProfileScreen>
                           child: TabBarView(
                             controller: _tabController,
                             children: [
-                              Container(child: const Text('Контент видео')),
+                              if (_isLoading)
+                                const Center(child: CircularProgressIndicator())
+                              else if (_error != null)
+                                Center(
+                                  child: Text(
+                                    _error!,
+                                    style: const TextStyle(color: Colors.red),
+                                  ),
+                                )
+                              else if (_videos != null)
+                                VideoGrid(
+                                  videos: _videos!,
+                                  onVideoTap: _onVideoTap,
+                                )
+                              else
+                                const Center(
+                                  child: Text('No videos available'),
+                                ),
+
                               Container(
+                                padding: const EdgeInsets.all(16),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    BlocBuilder<ProfileBloc, ProfileState>(
-                                      builder: (context, state) {
-                                        return InkWell(
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: Color.fromARGB(
-                                                255,
-                                                90,
-                                                90,
-                                                90,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                            ),
-                                            height: 65,
-                                            child: Center(child: Text('Выйти')),
-                                          ),
-                                          onTap: () {
-                                            context.read<ProfileBloc>().add(
-                                              LeaveProfileEvent(),
-                                            );
-                                          },
+                                    InkWell(
+                                      onTap: () {
+                                        context.read<ProfileBloc>().add(
+                                          LeaveProfileEvent(),
                                         );
                                       },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                            255,
+                                            90,
+                                            90,
+                                            90,
+                                          ),
+                                          borderRadius: BorderRadius.circular(
+                                            15,
+                                          ),
+                                        ),
+                                        height: 65,
+                                        child: const Center(
+                                          child: Text(
+                                            'Выйти',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                    SizedBox(height: 30),
+                                    const SizedBox(height: 30),
                                   ],
                                 ),
                               ),
@@ -156,19 +231,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                         ),
                       ],
                     ),
-
-                    const SizedBox(height: 20),
-
-                    if (state.profile.videos.isNotEmpty) ...[
-                      const Text(
-                        'Мои видео',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                    ],
                   ],
                 ),
               ),
@@ -192,6 +254,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               ),
             );
           }
+
           return const Center(child: CircularProgressIndicator());
         },
       ),
