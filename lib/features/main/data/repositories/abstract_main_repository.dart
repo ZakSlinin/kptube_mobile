@@ -1,5 +1,5 @@
-import 'package:kptube_mobile/features/main/models/Video.dart';
+import 'package:kptube_mobile/core/models/video/video.dart';
 
 abstract class AbstractMainRepository {
-  Future<List<Video>> getVideos();
+  Future<List<VideoPreview>> getVideosMain();
 }

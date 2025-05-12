@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kptube_mobile/features/profile/bloc/profile_bloc.dart';
-import 'package:kptube_mobile/features/profile/models/video.dart';
+import 'package:kptube_mobile/core/models/video/video.dart';
 import 'package:kptube_mobile/features/profile/widgets/video_grid.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -15,7 +15,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  List<ProfileVideo>? _videos;
+  List<VideoPreview>? _videos;
   bool _isLoading = false;
   String? _error;
   String? _currentUsername;
@@ -69,7 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen>
     }
   }
 
-  void _onVideoTap(ProfileVideo video) {
+  void _onVideoTap(VideoPreview video) {
     // TODO: Implement video playback
     print('Video tapped: ${video.Video_ID}');
   }
@@ -96,25 +96,28 @@ class _ProfileScreenState extends State<ProfileScreen>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Header
-                    Image.network(
-                      state.profile.header,
-                      height: 200,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      loadingBuilder: (context, child, loadingProgress) {
-                        if (loadingProgress == null) return child;
-                        return Container(
-                          height: 200,
-                          width: double.infinity,
-                          color: Colors.grey[200],
-                          child: const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      },
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Image.network(
+                        state.profile.header,
+                        height: 200,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+
+                        loadingBuilder: (context, child, loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Container(
+                            height: 200,
+                            width: double.infinity,
+                            color: Colors.grey[200],
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                     const SizedBox(height: 15),
-
                     // Profile info
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,

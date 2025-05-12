@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kptube_mobile/features/profile/models/video.dart';
+import 'package:kptube_mobile/core/models/video/video.dart';
 
 class VideoGridItem extends StatelessWidget {
-  final ProfileVideo video;
+  final VideoPreview video;
   final VoidCallback onTap;
 
   const VideoGridItem({Key? key, required this.video, required this.onTap})

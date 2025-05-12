@@ -1,5 +1,5 @@
 import 'package:kptube_mobile/features/profile/models/profile.dart';
-import 'package:kptube_mobile/features/profile/models/video.dart';
+import 'package:kptube_mobile/core/models/video/video.dart';
 
 abstract class AbstractProfileRepository {
   Future<Profile> getMyProfile({
@@ -10,5 +10,5 @@ abstract class AbstractProfileRepository {
     required String videos,
   });
 
-  Future<List<ProfileVideo>> getVideos(String username);
+  Future<List<VideoPreview>> getVideos(String username);
 }

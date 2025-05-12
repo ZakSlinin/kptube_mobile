@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kptube_mobile/features/profile/data/repositories/abstract_profile_repository.dart';
 import 'package:kptube_mobile/features/profile/models/profile.dart';
-import 'package:kptube_mobile/features/profile/models/video.dart';
+import 'package:kptube_mobile/core/models/video/video.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'profile_events.dart';
@@ -72,7 +72,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     }
   }
 
-  Future<List<ProfileVideo>> getVideos(String username) async {
+  Future<List<VideoPreview>> getVideos(String username) async {
     try {
       return await profileRepository.getVideos(username);
     } catch (e) {

@@ -1,4 +1,4 @@
-class ProfileVideo {
+class VideoPreview {
   final int? id;
   final String? Video_ID;
   final String? name;
@@ -7,7 +7,7 @@ class ProfileVideo {
   final String? preview;
   final String? owner;
 
-  ProfileVideo({
+  VideoPreview({
     this.id,
     this.Video_ID,
     this.name,
@@ -17,8 +17,8 @@ class ProfileVideo {
     this.owner,
   });
 
-  factory ProfileVideo.fromJson(Map<String, dynamic> json) {
-    return ProfileVideo(
+  factory VideoPreview.fromJson(Map<String, dynamic> json) {
+    return VideoPreview(
       Video_ID: json['Video_ID'] as String?,
       name: json['name'] as String?,
       views: json['views'] as int?,

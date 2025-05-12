@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:kptube_mobile/features/profile/models/video.dart';
+import 'package:kptube_mobile/core/models/video/video.dart';
 
 class Profile {
   final String? name;

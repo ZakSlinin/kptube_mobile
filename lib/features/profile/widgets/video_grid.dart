@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kptube_mobile/features/profile/models/video.dart';
+import 'package:kptube_mobile/core/models/video/video.dart';
 import 'package:kptube_mobile/features/profile/widgets/video_grid_item.dart';
 
 class VideoGrid extends StatelessWidget {
-  final List<ProfileVideo> videos;
-  final Function(ProfileVideo) onVideoTap;
+  final List<VideoPreview> videos;
+  final Function(VideoPreview) onVideoTap;
 
   const VideoGrid({Key? key, required this.videos, required this.onVideoTap})
     : super(key: key);

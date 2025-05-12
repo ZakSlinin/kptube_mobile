@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:kptube_mobile/core/constants/constants.dart';
 import 'package:kptube_mobile/features/profile/data/repositories/profile_repository_local.dart';
 import 'package:kptube_mobile/features/profile/models/profile.dart';
-import 'package:kptube_mobile/features/profile/models/video.dart';
+import 'package:kptube_mobile/core/models/video/video.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MyProfileApi {
@@ -80,7 +80,7 @@ class MyProfileApi {
     }
   }
 
-  Future<List<ProfileVideo>> getVideos(String username) async {
+  Future<List<VideoPreview>> getVideos(String username) async {
     try {
       final url = '$getVideosUrl?owner=$username';
       print('Fetching videos from URL: $url');
@@ -103,7 +103,7 @@ class MyProfileApi {
         final List<dynamic> videosData = response.data;
         print('Parsing ${videosData.length} videos');
         final videos = videosData
-            .map((videoData) => ProfileVideo.fromJson(videoData))
+            .map((videoData) => VideoPreview.fromJson(videoData))
             .toList();
         print('Successfully parsed ${videos.length} videos');
         return videos;
