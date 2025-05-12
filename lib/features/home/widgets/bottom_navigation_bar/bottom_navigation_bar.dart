@@ -31,21 +31,7 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
           label: '',
         ),
         BottomNavigationBarItem(
-          icon: SvgPicture.asset(
-            'assets/svg/Music.svg',
-            color: Colors.white,
-          ),
-          label: '',
-        ),
-        BottomNavigationBarItem(
           icon: SvgPicture.asset('assets/svg/Add_content.svg'),
-          label: '',
-        ),
-        BottomNavigationBarItem(
-          icon: SvgPicture.asset(
-            'assets/svg/Library.svg',
-            color: Colors.white,
-          ),
           label: '',
         ),
         BottomNavigationBarItem(

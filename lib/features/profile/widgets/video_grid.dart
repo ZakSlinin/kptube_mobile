@@ -19,9 +19,9 @@ class VideoGrid extends StatelessWidget {
       padding: const EdgeInsets.all(8),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 1,
-        childAspectRatio: 0.8,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
+        childAspectRatio: 1.2,
+        crossAxisSpacing: 4,
+        mainAxisSpacing: 4,
       ),
       itemCount: videos.length,
       itemBuilder: (context, index) {
