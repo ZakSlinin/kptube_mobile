@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:kptube_mobile/core/di/injection.dart';
 import 'package:kptube_mobile/features/home/widgets/bottom_navigation_bar/bottom_navigation_bar.dart';
+import 'package:kptube_mobile/features/main/bloc/main_bloc.dart';
 import 'package:kptube_mobile/features/main/screens/main_screen/main_screen.dart';
 import 'package:kptube_mobile/features/profile/bloc/profile_bloc.dart';
 import 'package:kptube_mobile/features/profile/screens/profile_screen/profile_screen.dart';
@@ -39,46 +41,50 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget _buildPage(int index) {
+    switch (index) {
+      case 0:
+        return const MainScreen();
+      case 1:
+        return const Center(child: Text('3'));
+      case 2:
+        return BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            if (state is ProfileGetSuccess || state is ProfileLoading) {
+              return const ProfileScreen();
+            } else {
+              return const RegistrationScreen();
+            }
+          },
+        );
+      default:
+        return const SizedBox.shrink();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return BlocBuilder<ProfileBloc, ProfileState>(
-      builder: (context, state) {
-        return Scaffold(
-          body: PageView(
-            controller: pageController,
-            onPageChanged: (index) {
-              setState(() => selectedPageIndex = index);
-            },
-            children: [
-              Material(
-                type: MaterialType.transparency,
-                child: Theme(data: theme, child: MainScreen()),
-              ),
-              const Scaffold(body: Center(child: Text('3'))),
-              if (state is ProfileGetSuccess || state is ProfileLoading)
-                Material(
-                  type: MaterialType.transparency,
-                  child: Theme(data: theme, child: const ProfileScreen()),
-                )
-              else if (state is ProfileFailed)
-                Material(
-                  type: MaterialType.transparency,
-                  child: Theme(data: theme, child: const RegistrationScreen()),
-                )
-              else
-                Material(
-                  type: MaterialType.transparency,
-                  child: Theme(data: theme, child: const RegistrationScreen()),
-                ),
-            ],
-          ),
-          bottomNavigationBar: BottomNavigationBarWidget(
-            selectedPageIndex: selectedPageIndex,
-            onPageSelected: _onPageSelected,
-          ),
-        );
-      },
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => MainBloc(mainRepository: getIt())),
+        BlocProvider(
+          create: (context) => ProfileBloc(profileRepository: getIt()),
+        ),
+      ],
+      child: Scaffold(
+        body: PageView.builder(
+          controller: pageController,
+          onPageChanged: (index) {
+            setState(() => selectedPageIndex = index);
+          },
+          itemBuilder: (context, index) => _buildPage(index),
+          itemCount: 3,
+        ),
+        bottomNavigationBar: BottomNavigationBarWidget(
+          selectedPageIndex: selectedPageIndex,
+          onPageSelected: _onPageSelected,
+        ),
+      ),
     );
   }
 }

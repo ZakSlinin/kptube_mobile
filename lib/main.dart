@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kptube_mobile/core/di/injection.dart';
 import 'package:kptube_mobile/features/auth/bloc/auth_bloc.dart';
 import 'package:kptube_mobile/features/auth/data/repositories/abstract_auth_repository.dart';
+import 'package:kptube_mobile/features/main/bloc/main_bloc.dart';
+import 'package:kptube_mobile/features/main/data/repositories/abstract_main_repository.dart';
 import 'package:kptube_mobile/features/profile/data/repositories/abstract_profile_repository.dart';
 import 'package:kptube_mobile/features/registration/bloc/registration_bloc.dart';
 
@@ -20,6 +22,7 @@ void main() {
               AuthBloc(authRepository: getIt<AbstractAuthRepository>()),
         ),
         BlocProvider(create: (context) => ProfileBloc(profileRepository: getIt<AbstractProfileRepository>())),
+        BlocProvider(create: (context) => MainBloc(mainRepository: getIt<AbstractMainRepository>())),
       ],
       child: KptubeMobile(),
     ),

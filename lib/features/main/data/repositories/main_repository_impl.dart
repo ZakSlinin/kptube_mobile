@@ -5,7 +5,7 @@ import 'package:kptube_mobile/features/main/data/repositories/main_api.dart';
 
 
 class MainRepositoryImpl implements AbstractMainRepository {
-  final MainScreenApi _mainScreenApi;
+  final MainApi _mainScreenApi;
 
   MainRepositoryImpl(this._mainScreenApi);
 
