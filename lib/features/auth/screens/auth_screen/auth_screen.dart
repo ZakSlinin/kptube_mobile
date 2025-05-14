@@ -1,9 +1,13 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kptube_mobile/core/di/injection.dart';
 import 'package:kptube_mobile/features/auth/bloc/auth_bloc.dart';
 import 'package:kptube_mobile/features/registration/screens/registration_screen/registration_screen.dart';
+import 'package:kptube_mobile/core/routing/app_router.dart';
 
+@RoutePage()
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
 
@@ -33,7 +37,7 @@ class _AuthScreenState extends State<AuthScreen> {
           if (!mounted) return;
 
           if (state is AuthSuccess) {
-            Navigator.pushReplacementNamed(context, '/');
+            context.router.replace(const HomeRoute());
           } else if (state is AuthFailed) {
             ScaffoldMessenger.of(
               context,
@@ -42,59 +46,60 @@ class _AuthScreenState extends State<AuthScreen> {
         },
         child: GestureDetector(
           onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 60, 16, 16),
-            child: Center(
-              child: Column(
-                children: [
-                  const Center(
-                    child: Text('Авторизация', style: TextStyle(fontSize: 30)),
-                  ),
-                  const SizedBox(height: 15),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Имя:',
-                      labelStyle: const TextStyle(color: Colors.white),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
+          child: Scaffold(
+            body: ListView(
+              padding: const EdgeInsets.fromLTRB(16, 60, 16, 16),
+              children: [
+                const Center(
+                  child: Text('Авторизация', style: TextStyle(fontSize: 30)),
+                ),
+                const SizedBox(height: 15),
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Имя:',
+                    labelStyle: const TextStyle(color: Colors.white),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
                     ),
-                    style: const TextStyle(color: Colors.white),
-                    controller: _nameController,
                   ),
-                  const SizedBox(height: 15),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: 'Пароль:',
-                      labelStyle: const TextStyle(color: Colors.white),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                      ),
+                  style: const TextStyle(color: Colors.white),
+                  controller: _nameController,
+                ),
+                const SizedBox(height: 15),
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Пароль:',
+                    labelStyle: const TextStyle(color: Colors.white),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
                     ),
-                    style: const TextStyle(color: Colors.white),
-                    controller: _passwordController,
                   ),
-                  const SizedBox(height: 300),
-                  BlocBuilder<AuthBloc, AuthState>(
-                    builder: (context, state) {
-                      return InkWell(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 90, 90, 90),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          height: 65,
-                          child: Center(
-                            child: state is AuthLoading
-                                ? const CircularProgressIndicator(
+                  style: const TextStyle(color: Colors.white),
+                  controller: _passwordController,
+                ),
+                const SizedBox(height: 300),
+                BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, state) {
+                    return InkWell(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 90, 90, 90),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        height: 65,
+                        child: Center(
+                          child:
+                              state is AuthLoading
+                                  ? const CircularProgressIndicator(
                                     color: Colors.white,
                                   )
-                                : const Text('Войти'),
-                          ),
+                                  : const Text('Войти'),
                         ),
-                        onTap: state is AuthLoading
-                            ? null
-                            : () {
+                      ),
+                      onTap:
+                          state is AuthLoading
+                              ? null
+                              : () {
                                 if (!mounted) return;
                                 context.read<AuthBloc>().add(
                                   AuthUserEvent(
@@ -103,45 +108,33 @@ class _AuthScreenState extends State<AuthScreen> {
                                   ),
                                 );
                               },
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 5),
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'нет аккаунта?',
-                          style: TextStyle(fontSize: 15),
+                    );
+                  },
+                ),
+                const SizedBox(height: 5),
+                Center(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'нет аккаунта?',
+                        style: TextStyle(fontSize: 15),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          if (!mounted) return;
+                          context.router.replace(const RegistrationRoute());
+                        },
+                        child: const Text(
+                          'Создать аккаунт',
+                          style: TextStyle(fontSize: 14),
                         ),
-                        InkWell(
-                          onTap: () {
-                            if (!mounted) return;
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Material(
-                                  type: MaterialType.transparency,
-                                  child: Theme(
-                                    data: theme,
-                                    child: const RegistrationScreen(),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                          child: const Text(
-                            'Создать аккаунт',
-                            style: TextStyle(fontSize: 14),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

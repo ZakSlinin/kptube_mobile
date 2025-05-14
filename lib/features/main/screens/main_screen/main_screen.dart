@@ -1,9 +1,11 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kptube_mobile/core/models/video/video.dart';
 import 'package:kptube_mobile/features/main/bloc/main_bloc.dart';
 import 'package:kptube_mobile/features/profile/widgets/video_grid.dart';
 
+@RoutePage()
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 

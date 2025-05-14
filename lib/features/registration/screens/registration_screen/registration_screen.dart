@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:auto_route/auto_route.dart';
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,7 +10,9 @@ import 'package:kptube_mobile/core/di/injection.dart';
 import 'package:kptube_mobile/core/services/image_picker/image_picker.dart';
 import 'package:kptube_mobile/features/auth/screens/auth_screen/auth_screen.dart';
 import 'package:kptube_mobile/features/registration/bloc/registration_bloc.dart';
+import 'package:kptube_mobile/core/routing/app_router.dart';
 
+@RoutePage()
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
 
@@ -74,25 +78,29 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   const SizedBox(height: 15),
                   Center(
                     child: InkWell(
-                      onTap: () => showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Выберите источник'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () {
-                                _handleAvatarPick(ImageSource.camera);
-                              },
-                              child: const Text('Камера'),
-                            ),
-                            TextButton(
-                              onPressed: () =>
-                                  _handleAvatarPick(ImageSource.gallery),
-                              child: const Text('Галерея'),
-                            ),
-                          ],
-                        ),
-                      ),
+                      onTap:
+                          () => showDialog(
+                            context: context,
+                            builder:
+                                (context) => AlertDialog(
+                                  title: const Text('Выберите источник'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        _handleAvatarPick(ImageSource.camera);
+                                      },
+                                      child: const Text('Камера'),
+                                    ),
+                                    TextButton(
+                                      onPressed:
+                                          () => _handleAvatarPick(
+                                            ImageSource.gallery,
+                                          ),
+                                      child: const Text('Галерея'),
+                                    ),
+                                  ],
+                                ),
+                          ),
                       child: Container(
                         height: 125,
                         width: 125,
@@ -100,57 +108,65 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           border: Border.all(color: Colors.grey),
                           borderRadius: BorderRadius.circular(65),
                         ),
-                        child: _selectedImageAvatar != null
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(65),
-                                child: Image.file(
-                                  _selectedImageAvatar!,
-                                  fit: BoxFit.cover,
+                        child:
+                            _selectedImageAvatar != null
+                                ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(65),
+                                  child: Image.file(
+                                    _selectedImageAvatar!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                                : SvgPicture.asset(
+                                  'assets/svg/Add_avatar.svg',
+                                  height: 125,
                                 ),
-                              )
-                            : SvgPicture.asset(
-                                'assets/svg/Add_avatar.svg',
-                                height: 125,
-                              ),
                       ),
                     ),
                   ),
                   const SizedBox(height: 15),
                   Center(
                     child: InkWell(
-                      onTap: () => showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Выберите источник'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () =>
-                                  _handleHeaderPick(ImageSource.camera),
-                              child: const Text('Камера'),
-                            ),
-                            TextButton(
-                              onPressed: () =>
-                                  _handleHeaderPick(ImageSource.gallery),
-                              child: const Text('Галерея'),
-                            ),
-                          ],
-                        ),
-                      ),
+                      onTap:
+                          () => showDialog(
+                            context: context,
+                            builder:
+                                (context) => AlertDialog(
+                                  title: const Text('Выберите источник'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed:
+                                          () => _handleHeaderPick(
+                                            ImageSource.camera,
+                                          ),
+                                      child: const Text('Камера'),
+                                    ),
+                                    TextButton(
+                                      onPressed:
+                                          () => _handleHeaderPick(
+                                            ImageSource.gallery,
+                                          ),
+                                      child: const Text('Галерея'),
+                                    ),
+                                  ],
+                                ),
+                          ),
                       child: Container(
                         height: 108,
                         width: 317,
-                        child: _selectedImageHeader != null
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.file(
-                                  _selectedImageHeader!,
-                                  fit: BoxFit.cover,
+                        child:
+                            _selectedImageHeader != null
+                                ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.file(
+                                    _selectedImageHeader!,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                                : SvgPicture.asset(
+                                  'assets/svg/Add_header.svg',
+                                  height: 125,
                                 ),
-                              )
-                            : SvgPicture.asset(
-                                'assets/svg/Add_header.svg',
-                                height: 125,
-                              ),
                       ),
                     ),
                   ),
@@ -190,8 +206,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   const SizedBox(height: 15),
                   InkWell(
                     onTap: () async {
-                      final String User_ID = (DateTime.now().millisecond)
-                          .toString();
+                      final String User_ID =
+                          (DateTime.now().millisecond).toString();
 
                       if (_nameController.text.isEmpty) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -277,7 +293,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       await Future.delayed(const Duration(milliseconds: 500));
 
                       if (mounted) {
-                        Navigator.pushReplacementNamed(context, '/');
+                        context.router.replace(const HomeRoute());
                       }
                     },
                     child: Container(
@@ -301,13 +317,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         ),
                         InkWell(
                           onTap: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(builder: (context) => Material(
-                                type: MaterialType.transparency,
-                                child: Theme(data: theme, child: const AuthScreen()),
-                              ),),
-                            );
+                            context.router.replace(const AuthRoute());
                           },
                           child: const Text(
                             'Войти',

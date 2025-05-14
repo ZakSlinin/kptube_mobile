@@ -1,3 +1,5 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kptube_mobile/core/di/injection.dart';
@@ -7,7 +9,9 @@ import 'package:kptube_mobile/features/main/screens/main_screen/main_screen.dart
 import 'package:kptube_mobile/features/profile/bloc/profile_bloc.dart';
 import 'package:kptube_mobile/features/profile/screens/profile_screen/profile_screen.dart';
 import 'package:kptube_mobile/features/registration/screens/registration_screen/registration_screen.dart';
+import 'package:kptube_mobile/core/routing/app_router.dart';
 
+@RoutePage()
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 

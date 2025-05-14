@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:kptube_mobile/core/routes/routes.dart';
+import 'package:kptube_mobile/core/routing/app_router.dart';
 import 'package:kptube_mobile/core/theme/theme.dart';
 
-
 class KptubeMobile extends StatelessWidget {
-  const KptubeMobile({super.key});
+  KptubeMobile({super.key});
+
+  final _appRouter = AppRouter();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'KptubeMobile',
       theme: darkTheme,
-      routes: routes,
+      routerDelegate: _appRouter.delegate(),
+      routeInformationParser: _appRouter.defaultRouteParser(),
     );
   }
 }
