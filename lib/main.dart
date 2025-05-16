@@ -18,11 +18,16 @@ void main() {
       providers: [
         BlocProvider(create: (context) => RegistrationBloc()),
         BlocProvider(
-          create: (context) =>
-              AuthBloc(authRepository: getIt<AbstractAuthRepository>()),
+          create:
+              (context) =>
+                  AuthBloc(authRepository: getIt<AbstractAuthRepository>()),
         ),
-        BlocProvider(create: (context) => ProfileBloc(profileRepository: getIt<AbstractProfileRepository>())),
-        BlocProvider(create: (context) => MainBloc(mainRepository: getIt<AbstractMainRepository>())),
+        BlocProvider(create: (context) => getIt<ProfileBloc>()),
+        BlocProvider(
+          create:
+              (context) =>
+                  MainBloc(mainRepository: getIt<AbstractMainRepository>()),
+        ),
       ],
       child: KptubeMobile(),
     ),

@@ -10,7 +10,8 @@ part 'registration_states.dart';
 class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
   final registrationRepository = getIt<AbstractRegistrationRepository>();
 
-  RegistrationBloc([abstractRegistrationRepository]) : super(RegistrationInitial()) {
+  RegistrationBloc([abstractRegistrationRepository])
+    : super(RegistrationInitial()) {
     on<RegisterUserEvent>(_handleRegisterUser);
   }
 
@@ -35,6 +36,7 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
         header: event.header,
         User_ID: event.User_ID,
       );
+      emit(RegistrationSuccess());
     } catch (e) {
       print('Failed registration with error: ${e.toString()}');
       emit(RegistrationFailed(error: e.toString()));

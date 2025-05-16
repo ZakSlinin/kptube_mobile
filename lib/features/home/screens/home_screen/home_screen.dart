@@ -27,7 +27,11 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     pageController = PageController(initialPage: 0);
-    context.read<ProfileBloc>().add(GetProfileEvent());
+    Future.microtask(() {
+      if (mounted) {
+        context.read<ProfileBloc>().add(GetProfileEvent());
+      }
+    });
   }
 
   @override
@@ -54,10 +58,15 @@ class _HomeScreenState extends State<HomeScreen> {
       case 2:
         return BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
+            print('Current ProfileState: $state');
             if (state is ProfileGetSuccess || state is ProfileLoading) {
               return const ProfileScreen();
-            } else {
+            } else if (state is ProfileLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is ProfileFailed) {
               return const RegistrationScreen();
+            } else {
+              return const Center(child: CircularProgressIndicator());
             }
           },
         );
@@ -71,9 +80,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => MainBloc(mainRepository: getIt())),
-        BlocProvider(
-          create: (context) => ProfileBloc(profileRepository: getIt()),
-        ),
       ],
       child: Scaffold(
         body: PageView.builder(

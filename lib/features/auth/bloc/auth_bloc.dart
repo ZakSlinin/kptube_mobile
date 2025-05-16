@@ -16,9 +16,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     emit(AuthLoading());
+    print('Starting authentication for user: ${event.name}');
 
     try {
-      await authRepository.authUser(name: event.name, password: event.password);
+      final user = await authRepository.authUser(
+        name: event.name,
+        password: event.password,
+      );
+      print('Authentication successful for user: ${user.name}');
       emit(AuthSuccess());
     } catch (e) {
       print('Failed auth with error: ${e.toString()}');
