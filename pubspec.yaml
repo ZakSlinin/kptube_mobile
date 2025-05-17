@@ -79,9 +79,7 @@ flutter:
   assets:
     - assets/svg/Add_content.svg
     - assets/svg/Home.svg
-    - assets/svg/Library.svg
     - assets/svg/User.svg
-    - assets/svg/Music.svg
     - assets/svg/Add_avatar.svg
     - assets/svg/Add_header.svg
 
