@@ -10,6 +10,8 @@ import 'package:kptube_mobile/features/profile/bloc/profile_bloc.dart';
 import 'package:kptube_mobile/features/profile/screens/profile_screen/profile_screen.dart';
 import 'package:kptube_mobile/features/registration/screens/registration_screen/registration_screen.dart';
 import 'package:kptube_mobile/core/routing/app_router.dart';
+import 'package:kptube_mobile/features/video/screens/video_screen/video_screen.dart';
+import 'package:kptube_mobile/features/video/bloc/video_bloc.dart';
 
 @RoutePage()
 class HomeScreen extends StatefulWidget {
@@ -52,7 +54,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildPage(int index) {
     switch (index) {
       case 0:
-        return const MainScreen();
+        return BlocBuilder<MainBloc, MainState>(
+          builder: (context, state) {
+            if (state is MainVideoTap) {
+              return const VideoScreen();
+            }
+            return const MainScreen();
+          },
+        );
       case 1:
         return const Center(child: Text('3'));
       case 2:
@@ -80,6 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => MainBloc(mainRepository: getIt())),
+        BlocProvider(create: (context) => VideoBloc()),
       ],
       child: Scaffold(
         body: PageView.builder(

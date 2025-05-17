@@ -5,8 +5,8 @@ import 'package:kptube_mobile/features/auth/bloc/auth_bloc.dart';
 import 'package:kptube_mobile/features/auth/data/repositories/abstract_auth_repository.dart';
 import 'package:kptube_mobile/features/main/bloc/main_bloc.dart';
 import 'package:kptube_mobile/features/main/data/repositories/abstract_main_repository.dart';
-import 'package:kptube_mobile/features/profile/data/repositories/abstract_profile_repository.dart';
 import 'package:kptube_mobile/features/registration/bloc/registration_bloc.dart';
+import 'package:kptube_mobile/features/video/bloc/video_bloc.dart';
 
 import 'core/app/kptube_mobile_app.dart';
 import 'features/profile/bloc/profile_bloc.dart';
@@ -28,6 +28,7 @@ void main() {
               (context) =>
                   MainBloc(mainRepository: getIt<AbstractMainRepository>()),
         ),
+        BlocProvider(create: (context) => VideoBloc()),
       ],
       child: KptubeMobile(),
     ),

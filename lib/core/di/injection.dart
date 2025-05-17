@@ -18,6 +18,10 @@ import 'package:kptube_mobile/features/registration/data/repositories/abstract_r
 import 'package:kptube_mobile/features/registration/data/repositories/registration_api.dart';
 import 'package:kptube_mobile/features/registration/data/repositories/registration_repository_impl.dart';
 import 'package:kptube_mobile/features/registration/data/repositories/registration_repository_local.dart';
+import 'package:kptube_mobile/features/video/bloc/video_bloc.dart';
+import 'package:kptube_mobile/features/video/data/repositories/abstract_video_repository.dart';
+import 'package:kptube_mobile/features/video/data/repositories/video_api.dart';
+import 'package:kptube_mobile/features/video/data/repositories/video_repository_impl.dart';
 
 final getIt = GetIt.I;
 
@@ -69,4 +73,12 @@ void setupDependencies() {
   getIt.registerLazySingleton<AbstractMainRepository>(
     () => MainRepositoryImpl(getIt<MainApi>()),
   );
+
+  getIt.registerSingleton<VideoApi>(VideoApi(getIt<Dio>()));
+
+  getIt.registerLazySingleton<AbstractVideoRepository>(
+    () => VideoRepositoryImpl(getIt<VideoApi>()),
+  );
+
+  getIt.registerSingleton<VideoBloc>(VideoBloc());
 }

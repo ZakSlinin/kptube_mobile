@@ -89,7 +89,12 @@ class _MainScreenState extends State<MainScreen> {
                       return VideoGridItem(
                         key: ValueKey('video_${video.Video_ID}'),
                         video: video,
-                        onTap: () => _onVideoTap(video),
+                        onTap: () {
+                          print('${video.name} tapped');
+                          context.read<MainBloc>().add(
+                            VideoTap(Video_ID: video.Video_ID!),
+                          );
+                        },
                       );
                     }, childCount: state.videos.length),
                   ),

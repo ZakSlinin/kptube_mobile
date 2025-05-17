@@ -13,4 +13,8 @@ class MainSuccess extends MainState {
   MainSuccess(this.videos);
 }
 
-class MainVideoTap extends MainState {}
+class MainVideoTap extends MainState {
+  final String Video_ID;
+
+  MainVideoTap({required this.Video_ID});
+}

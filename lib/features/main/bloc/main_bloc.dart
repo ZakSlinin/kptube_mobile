@@ -10,6 +10,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   MainBloc({required this.mainRepository}) : super(MainInitial()) {
     on<GetMainEvent>(_onGetMain);
+    on<VideoTap>(_onVideoTap);
   }
 
   Future<void> _onGetMain(GetMainEvent event, Emitter<MainState> emit) async {
@@ -44,8 +45,11 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   Future<void> _onVideoTap(VideoTap event, Emitter<MainState> emit) async {
     try {
-      print('MainBloc: video tapped');
-      emit(MainVideoTap());
-    } catch (e) {}
+      print('MainBloc: video tapped with ID: ${event.Video_ID}');
+      emit(MainVideoTap(Video_ID: event.Video_ID));
+      print('MainBloc: emitted MainVideoTap state');
+    } catch (e) {
+      print('Error: $e');
+    }
   }
 }

@@ -42,13 +42,6 @@ class VideoGridItem extends StatelessWidget {
                       );
                     },
                   ),
-                  const Center(
-                    child: Icon(
-                      Icons.play_circle_filled,
-                      size: 40,
-                      color: Colors.white,
-                    ),
-                  ),
                 ],
               ),
             ),
