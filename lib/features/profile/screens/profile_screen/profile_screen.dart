@@ -2,9 +2,9 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:kptube_mobile/core/widgets/video_grid.dart';
 import 'package:kptube_mobile/features/profile/bloc/profile_bloc.dart';
 import 'package:kptube_mobile/core/models/video/video.dart';
-import 'package:kptube_mobile/features/profile/widgets/video_grid.dart';
 
 
 @RoutePage()
