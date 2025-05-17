@@ -5,6 +5,7 @@ import 'package:kptube_mobile/features/main/screens/main_screen/main_screen.dart
 import 'package:kptube_mobile/features/profile/screens/profile_screen/profile_screen.dart';
 import 'package:kptube_mobile/features/registration/screens/registration_screen/registration_screen.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:kptube_mobile/features/video/screens/video_screen/video_screen.dart';
 
 part 'app_router.gr.dart';
 
@@ -17,5 +18,6 @@ class AppRouter extends RootStackRouter {
     AutoRoute(page: MainRoute.page),
     AutoRoute(page: ProfileRoute.page),
     AutoRoute(page: RegistrationRoute.page),
+    AutoRoute(page: VideoRoute.page),
   ];
 }

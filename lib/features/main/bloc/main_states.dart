@@ -12,3 +12,5 @@ class MainSuccess extends MainState {
   final List<VideoPreview> videos;
   MainSuccess(this.videos);
 }
+
+class MainVideoTap extends MainState {}

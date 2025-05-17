@@ -38,19 +38,51 @@ class _MainScreenState extends State<MainScreen> {
           if (state is MainSuccess) {
             return CustomScrollView(
               slivers: [
-                const SliverPadding(
-                  padding: EdgeInsets.fromLTRB(16, 60, 16, 16),
-                  sliver: SliverToBoxAdapter(child: SizedBox(height: 12)),
+                SliverAppBar(
+                  floating: true,
+                  snap: true,
+                  backgroundColor:
+                      Theme.of(context).appBarTheme.backgroundColor,
+                  surfaceTintColor: Colors.transparent,
+                  elevation: 0,
+                  bottom: PreferredSize(
+                    preferredSize: const Size.fromHeight(80),
+                    child: Center(
+                      child: Container(
+                        width: 350,
+                        height: 60,
+                        margin: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 177, 177, 177),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(Icons.search_rounded, size: 40),
+                            SizedBox(width: 16),
+                            Expanded(
+                              child: TextField(
+                                style: TextStyle(color: Colors.black),
+                                decoration: InputDecoration(
+                                  hintText: 'search video',
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
                 SliverPadding(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(16),
                   sliver: SliverGrid(
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 1,
                           childAspectRatio: 1.2,
-                          crossAxisSpacing: 4,
-                          mainAxisSpacing: 4,
+                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 8,
                         ),
                     delegate: SliverChildBuilderDelegate((context, index) {
                       final video = state.videos[index];
@@ -65,7 +97,6 @@ class _MainScreenState extends State<MainScreen> {
               ],
             );
           }
-
           return const Center(child: Text('Нет доступных видео'));
         },
       ),

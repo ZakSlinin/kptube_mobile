@@ -18,4 +18,7 @@ final darkTheme = ThemeData(
     labelStyle: TextStyle(color: Colors.white, fontSize: 20),
     contentPadding: EdgeInsets.all(4),
   ),
+  appBarTheme: AppBarTheme(
+    backgroundColor: Color.fromARGB(255, 20, 20, 24),
+  )
 );

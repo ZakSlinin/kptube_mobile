@@ -30,6 +30,8 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         print('- Preview URL: ${videos.first.preview}');
       }
 
+      videos.shuffle();
+
       emit(MainSuccess(videos));
       print('MainBloc: Emitted MainSuccess state');
     } catch (e, stackTrace) {
@@ -38,5 +40,12 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       print('Stack trace: $stackTrace');
       emit(MainFailed());
     }
+  }
+
+  Future<void> _onVideoTap(VideoTap event, Emitter<MainState> emit) async {
+    try {
+      print('MainBloc: video tapped');
+      emit(MainVideoTap());
+    } catch (e) {}
   }
 }
