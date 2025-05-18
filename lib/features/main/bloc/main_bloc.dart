@@ -26,7 +26,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         print('MainBloc: No videos received from repository');
       } else {
         print('MainBloc: First video details:');
-        print('- ID: ${videos.first.Video_ID}');
+        print('- Owner: ${videos.first.owner}');
         print('- Name: ${videos.first.name}');
         print('- Preview URL: ${videos.first.preview}');
       }
@@ -45,7 +45,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   Future<void> _onVideoTap(VideoTap event, Emitter<MainState> emit) async {
     try {
-      print('MainBloc: video tapped with ID: ${event.Video_ID}');
+      print('MainBloc: video tapped with owner: ${event.Video_ID}');
       emit(MainVideoTap(Video_ID: event.Video_ID));
       print('MainBloc: emitted MainVideoTap state');
     } catch (e) {
