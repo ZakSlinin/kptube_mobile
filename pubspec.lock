@@ -1014,13 +1014,13 @@ packages:
     source: hosted
     version: "2.9.5"
   video_player_android:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: video_player_android
-      sha256: "1f4e8e0e02403452d699ef7cf73fe9936fac8f6f0605303d111d71acb375d1bc"
+      sha256: "7018dbcb395e2bca0b9a898e73989e67c0c4a5db269528e1b036ca38bcca0d0b"
       url: "https://pub.dev"
     source: hosted
-    version: "2.8.3"
+    version: "2.7.17"
   video_player_avfoundation:
     dependency: transitive
     description:
