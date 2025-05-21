@@ -58,6 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context, state) {
             if (state is MainVideoTap) {
               return const VideoScreen();
+            } else if (state is MainNavigateToHome) {
+              return const MainScreen();
             }
             return const MainScreen();
           },

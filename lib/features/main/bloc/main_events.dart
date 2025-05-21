@@ -9,3 +9,5 @@ class VideoTap extends MainEvent {
 
   VideoTap({required this.Video_ID});
 }
+
+class NavigateToHomeEvent extends MainEvent {}

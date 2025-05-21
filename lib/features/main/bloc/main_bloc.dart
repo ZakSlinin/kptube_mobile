@@ -11,6 +11,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   MainBloc({required this.mainRepository}) : super(MainInitial()) {
     on<GetMainEvent>(_onGetMain);
     on<VideoTap>(_onVideoTap);
+    on<NavigateToHomeEvent>(_onNavigateToHome);
   }
 
   Future<void> _onGetMain(GetMainEvent event, Emitter<MainState> emit) async {
@@ -51,5 +52,9 @@ class MainBloc extends Bloc<MainEvent, MainState> {
     } catch (e) {
       print('Error: $e');
     }
+  }
+
+  void _onNavigateToHome(NavigateToHomeEvent event, Emitter<MainState> emit) {
+    emit(MainNavigateToHome());
   }
 }

@@ -18,3 +18,5 @@ class MainVideoTap extends MainState {
 
   MainVideoTap({required this.Video_ID});
 }
+
+class MainNavigateToHome extends MainState {}

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:kptube_mobile/features/main/bloc/main_bloc.dart';
 
 class BottomNavigationBarWidget extends StatefulWidget {
   final int selectedPageIndex;
@@ -12,17 +14,25 @@ class BottomNavigationBarWidget extends StatefulWidget {
   });
 
   @override
-  State<BottomNavigationBarWidget> createState() => _BottomNavigationBarWidgetState();
+  State<BottomNavigationBarWidget> createState() =>
+      _BottomNavigationBarWidgetState();
 }
 
 class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
+  void _handleNavigation(int index) {
+    if (index == 0) {
+      context.read<MainBloc>().add(NavigateToHomeEvent());
+    }
+    widget.onPageSelected(index);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 105,
       child: BottomNavigationBar(
         currentIndex: widget.selectedPageIndex,
-        onTap: widget.onPageSelected,
+        onTap: _handleNavigation,
         type: BottomNavigationBarType.fixed,
         iconSize: 0,
         selectedFontSize: 0,

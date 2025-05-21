@@ -5,6 +5,7 @@ import 'package:kptube_mobile/core/models/video/video.dart';
 import 'package:kptube_mobile/core/routing/app_router.dart';
 import 'package:kptube_mobile/core/widgets/video_grid_item.dart';
 import 'package:kptube_mobile/features/main/bloc/main_bloc.dart';
+import 'package:kptube_mobile/features/video/bloc/video_bloc.dart';
 
 @RoutePage()
 class MainScreen extends StatefulWidget {
@@ -29,7 +30,14 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<MainBloc, MainState>(
+      body: BlocConsumer<MainBloc, MainState>(
+        listener: (context, state) {
+          if (state is MainVideoTap) {
+            BlocProvider.of<VideoBloc>(
+              context,
+            ).add(GetVideoEvent(Video_ID: state.Video_ID));
+          }
+        },
         builder: (context, state) {
           if (state is MainLoading) {
             return const Center(child: CircularProgressIndicator());

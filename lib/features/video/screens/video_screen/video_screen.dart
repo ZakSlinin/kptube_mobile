@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kptube_mobile/features/main/bloc/main_bloc.dart';
+import 'package:kptube_mobile/features/video/bloc/video_bloc.dart';
 
 class VideoScreen extends StatefulWidget {
   const VideoScreen({super.key});
@@ -28,15 +29,12 @@ class _VideoScreenState extends State<VideoScreen>
       begin: 0.0,
       end: 1.0,
     ).animate(_animationController);
-    _initializeVideo();
   }
 
-  Future<void> _initializeVideo() async {
+  Future<void> _initializeVideo(String videoUrl) async {
     try {
       _videoPlayerController = VideoPlayerController.networkUrl(
-        Uri.parse(
-          'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4',
-        ),
+        Uri.parse(videoUrl),
       );
 
       await _videoPlayerController.initialize();
@@ -80,19 +78,38 @@ class _VideoScreenState extends State<VideoScreen>
             style: TextStyle(color: Colors.white),
           ),
         ),
-        body: Stack(
-          alignment: Alignment.center,
-          children: [
-            if (!_isInitialized) const CircularProgressIndicator(),
-            if (_isInitialized)
-              FadeTransition(
-                opacity: _fadeAnimation,
-                child: AspectRatio(
-                  aspectRatio: _videoPlayerController.value.aspectRatio,
-                  child: VideoPlayer(_videoPlayerController),
-                ),
-              ),
-          ],
+        body: BlocBuilder<VideoBloc, VideoState>(
+          builder: (context, state) {
+            if (state is VideoLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (state is VideoSuccess) {
+              if (!_isInitialized) {
+                _initializeVideo(state.videoUrl);
+              }
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  if (!_isInitialized) const CircularProgressIndicator(),
+                  if (_isInitialized)
+                    FadeTransition(
+                      opacity: _fadeAnimation,
+                      child: AspectRatio(
+                        aspectRatio: _videoPlayerController.value.aspectRatio,
+                        child: VideoPlayer(_videoPlayerController),
+                      ),
+                    ),
+                ],
+              );
+            }
+
+            if (state is VideoFailed) {
+              return Center(child: Text('Error: ${state.error}'));
+            }
+
+            return const Center(child: CircularProgressIndicator());
+          },
         ),
       ),
     );
