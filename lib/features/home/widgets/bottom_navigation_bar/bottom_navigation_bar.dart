@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kptube_mobile/features/main/bloc/main_bloc.dart';
+import 'package:kptube_mobile/features/profile/bloc/profile_bloc.dart';
 
 class BottomNavigationBarWidget extends StatefulWidget {
   final int selectedPageIndex;
@@ -22,6 +23,8 @@ class _BottomNavigationBarWidgetState extends State<BottomNavigationBarWidget> {
   void _handleNavigation(int index) {
     if (index == 0) {
       context.read<MainBloc>().add(NavigateToHomeEvent());
+    } else if (index == 2) {
+      context.read<ProfileBloc>().add(ProfileNavigateBackEvent());
     }
     widget.onPageSelected(index);
   }

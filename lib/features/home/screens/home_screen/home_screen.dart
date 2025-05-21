@@ -70,7 +70,11 @@ class _HomeScreenState extends State<HomeScreen> {
         return BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
             print('Current ProfileState: $state');
-            if (state is ProfileGetSuccess || state is ProfileLoading) {
+            if (state is ProfileVideoTapState) {
+              return const VideoScreen();
+            } else if (state is ProfileNavigateBackState) {
+              return const ProfileScreen();
+            } else if (state is ProfileGetSuccess || state is ProfileLoading) {
               return const ProfileScreen();
             } else if (state is ProfileLoading) {
               return const Center(child: CircularProgressIndicator());

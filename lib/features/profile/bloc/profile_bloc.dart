@@ -13,6 +13,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ProfileBloc({required this.profileRepository}) : super(ProfileInitial()) {
     on<GetProfileEvent>(_onGetProfile);
     on<LeaveProfileEvent>(_onLeaveProfile);
+    on<ProfileVideoTap>(_onVideoTap);
+    on<ProfileNavigateBackEvent>(_onNavigateBack);
   }
 
   Future<void> _onGetProfile(
@@ -79,5 +81,25 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       print('Failed to load videos: $e');
       rethrow;
     }
+  }
+
+  Future<void> _onVideoTap(
+    ProfileVideoTap event,
+    Emitter<ProfileState> emit,
+  ) async {
+    try {
+      print('ProfileBloc: video tapped with ID: ${event.Video_ID}');
+      emit(ProfileVideoTapState(event.Video_ID));
+      print('ProfileBloc: emitted ProfileVideoTapState');
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  void _onNavigateBack(
+    ProfileNavigateBackEvent event,
+    Emitter<ProfileState> emit,
+  ) {
+    emit(ProfileNavigateBackState());
   }
 }

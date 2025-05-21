@@ -1,11 +1,13 @@
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kptube_mobile/core/widgets/video_grid.dart';
 import 'package:kptube_mobile/features/profile/bloc/profile_bloc.dart';
 import 'package:kptube_mobile/core/models/video/video.dart';
-
+import 'package:kptube_mobile/features/video/bloc/video_bloc.dart';
+import 'package:kptube_mobile/core/routing/app_router.dart';
 
 @RoutePage()
 class ProfileScreen extends StatefulWidget {
@@ -72,15 +74,17 @@ class _ProfileScreenState extends State<ProfileScreen>
     }
   }
 
-  void _onVideoTap(VideoPreview video) {
-    // TODO: Implement video playback
-    print('Video tapped: ${video.Video_ID}');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<ProfileBloc, ProfileState>(
+      body: BlocConsumer<ProfileBloc, ProfileState>(
+        listener: (context, state) {
+          if (state is ProfileVideoTapState) {
+            BlocProvider.of<VideoBloc>(
+              context,
+            ).add(GetVideoEvent(Video_ID: state.Video_ID));
+          }
+        },
         builder: (context, state) {
           if (state is ProfileLoading) {
             return const Center(child: CircularProgressIndicator());
@@ -132,9 +136,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                             print('Error loading avatar image: $exception');
                             print('Stack trace: $stackTrace');
                           },
-                          child: state.profile.avatar.isEmpty
-                              ? SvgPicture.asset('assets/svg/Add_avatar.svg')
-                              : null,
+                          child:
+                              state.profile.avatar.isEmpty
+                                  ? SvgPicture.asset(
+                                    'assets/svg/Add_avatar.svg',
+                                  )
+                                  : null,
                         ),
                         const SizedBox(width: 15),
 
@@ -187,7 +194,11 @@ class _ProfileScreenState extends State<ProfileScreen>
                               else if (_videos != null)
                                 VideoGrid(
                                   videos: _videos!,
-                                  onVideoTap: _onVideoTap,
+                                  onVideoTap: (video) {
+                                    context.read<ProfileBloc>().add(
+                                      ProfileVideoTap(video.Video_ID!),
+                                    );
+                                  },
                                 )
                               else
                                 const Center(

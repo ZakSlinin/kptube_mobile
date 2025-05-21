@@ -11,3 +11,11 @@ class ProfileUserEvent extends ProfileEvent {
 }
 
 class LeaveProfileEvent extends ProfileEvent {}
+
+class ProfileVideoTap extends ProfileEvent {
+  final String Video_ID;
+
+  ProfileVideoTap(this.Video_ID);
+}
+
+class ProfileNavigateBackEvent extends ProfileEvent {}

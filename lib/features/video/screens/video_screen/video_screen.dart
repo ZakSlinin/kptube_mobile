@@ -3,6 +3,7 @@ import 'package:video_player/video_player.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kptube_mobile/features/main/bloc/main_bloc.dart';
 import 'package:kptube_mobile/features/video/bloc/video_bloc.dart';
+import 'package:kptube_mobile/features/profile/bloc/profile_bloc.dart';
 
 class VideoScreen extends StatefulWidget {
   const VideoScreen({super.key});
@@ -57,7 +58,9 @@ class _VideoScreenState extends State<VideoScreen>
 
   @override
   void dispose() {
-    _videoPlayerController.dispose();
+    if (_isInitialized) {
+      _videoPlayerController.dispose();
+    }
     _animationController.dispose();
     super.dispose();
   }
@@ -68,7 +71,12 @@ class _VideoScreenState extends State<VideoScreen>
       canPop: false,
       onPopInvoked: (didPop) {
         if (!didPop) {
-          context.read<MainBloc>().add(GetMainEvent());
+          if (context.read<MainBloc>().state is MainVideoTap) {
+            context.read<MainBloc>().add(NavigateToHomeEvent());
+          } else if (context.read<ProfileBloc>().state
+              is ProfileVideoTapState) {
+            context.read<ProfileBloc>().add(ProfileNavigateBackEvent());
+          }
         }
       },
       child: Scaffold(
