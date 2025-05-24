@@ -38,6 +38,11 @@ class _MainScreenState extends State<MainScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
+          if (state is MainNavigateToHome) {
+            context.read<MainBloc>().add(GetMainEvent());
+            return const Center(child: CircularProgressIndicator());
+          }
+
           if (state is MainSuccess) {
             return RefreshIndicator(
               onRefresh: () async {
