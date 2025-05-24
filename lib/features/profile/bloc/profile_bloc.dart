@@ -15,6 +15,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<LeaveProfileEvent>(_onLeaveProfile);
     on<ProfileVideoTap>(_onVideoTap);
     on<ProfileNavigateBackEvent>(_onNavigateBack);
+    on<ProfileNavigateToRegistrationEvent>(_onNavigateToRegistration);
+    on<ProfileNavigateToAuthEvent>(_onNavigateToAuth);
   }
 
   Future<void> _onGetProfile(
@@ -101,5 +103,19 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     Emitter<ProfileState> emit,
   ) {
     emit(ProfileNavigateBackState());
+  }
+
+  void _onNavigateToRegistration(
+    ProfileNavigateToRegistrationEvent event,
+    Emitter<ProfileState> emit,
+  ) {
+    emit(ProfileNavigateToRegistration());
+  }
+
+  void _onNavigateToAuth(
+    ProfileNavigateToAuthEvent event,
+    Emitter<ProfileState> emit,
+  ) {
+    emit(ProfileNavigateToAuth());
   }
 }

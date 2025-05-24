@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kptube_mobile/core/di/injection.dart';
 import 'package:kptube_mobile/core/routing/app_router.dart';
 import 'package:kptube_mobile/core/services/image_picker/image_picker.dart';
 import 'package:kptube_mobile/features/registration/bloc/registration_bloc.dart';
+import 'package:kptube_mobile/features/profile/bloc/profile_bloc.dart';
 
 @RoutePage()
 class RegistrationScreen extends StatefulWidget {
@@ -24,6 +24,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    print('RegistrationScreen: initState');
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _passwordController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
 
   Future<void> _handleAvatarPick(ImageSource source) async {
     try {
@@ -56,13 +70,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return BlocProvider(
-      create: (context) => getIt<RegistrationBloc>(),
+    return BlocProvider.value(
+      value: context.read<RegistrationBloc>(),
       child: BlocListener<RegistrationBloc, RegistrationState>(
         listener: (context, state) {
+          print('RegistrationScreen: Received state: $state');
+          if (!mounted) return;
+
           if (state is RegistrationSuccess) {
+            print('RegistrationScreen: Navigating to HomeRoute');
             context.router.replace(const HomeRoute());
           } else if (state is RegistrationFailed) {
+            print('RegistrationScreen: Showing error: ${state.error}');
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(state.error)));
@@ -319,7 +338,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           ),
                           InkWell(
                             onTap: () {
-                              context.router.replace(const AuthRoute());
+                              print('RegistrationScreen: Login button tapped');
+                              if (!mounted) return;
+                              context.read<ProfileBloc>().add(
+                                ProfileNavigateToAuthEvent(),
+                              );
                             },
                             child: const Text(
                               'Войти',

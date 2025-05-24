@@ -19,3 +19,7 @@ class ProfileVideoTap extends ProfileEvent {
 }
 
 class ProfileNavigateBackEvent extends ProfileEvent {}
+
+class ProfileNavigateToRegistrationEvent extends ProfileEvent {}
+
+class ProfileNavigateToAuthEvent extends ProfileEvent {}

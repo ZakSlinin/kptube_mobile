@@ -13,3 +13,5 @@ class AuthFailed extends AuthState {
 
   AuthFailed({required this.error});
 }
+
+class AuthNavigateToRegistration extends AuthState {}

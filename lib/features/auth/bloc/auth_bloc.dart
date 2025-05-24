@@ -9,6 +9,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   AuthBloc({required this.authRepository}) : super(AuthInitial()) {
     on<AuthUserEvent>(_handleAuthUser);
+    on<AuthNavigateToRegistrationEvent>(_handleNavigateToRegistration);
   }
 
   Future<void> _handleAuthUser(
@@ -29,5 +30,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       print('Failed auth with error: ${e.toString()}');
       emit(AuthFailed(error: e.toString()));
     }
+  }
+
+  void _handleNavigateToRegistration(
+    AuthNavigateToRegistrationEvent event,
+    Emitter<AuthState> emit,
+  ) {
+    emit(AuthNavigateToRegistration());
   }
 }

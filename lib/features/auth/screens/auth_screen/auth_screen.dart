@@ -6,6 +6,7 @@ import 'package:kptube_mobile/core/di/injection.dart';
 import 'package:kptube_mobile/features/auth/bloc/auth_bloc.dart';
 import 'package:kptube_mobile/features/registration/screens/registration_screen/registration_screen.dart';
 import 'package:kptube_mobile/core/routing/app_router.dart';
+import 'package:kptube_mobile/features/profile/bloc/profile_bloc.dart';
 
 @RoutePage()
 class AuthScreen extends StatefulWidget {
@@ -124,7 +125,9 @@ class _AuthScreenState extends State<AuthScreen> {
                       InkWell(
                         onTap: () {
                           if (!mounted) return;
-                          context.router.replace(const RegistrationRoute());
+                          context.read<ProfileBloc>().add(
+                            ProfileNavigateToRegistrationEvent(),
+                          );
                         },
                         child: const Text(
                           'Создать аккаунт',

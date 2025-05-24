@@ -12,7 +12,9 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
 
   RegistrationBloc([abstractRegistrationRepository])
     : super(RegistrationInitial()) {
+    print('RegistrationBloc: Initialized');
     on<RegisterUserEvent>(_handleRegisterUser);
+    on<RegistrationNavigateToAuthEvent>(_handleNavigateToAuth);
   }
 
   Future<void> _handleRegisterUser(
@@ -41,5 +43,14 @@ class RegistrationBloc extends Bloc<RegistrationEvent, RegistrationState> {
       print('Failed registration with error: ${e.toString()}');
       emit(RegistrationFailed(error: e.toString()));
     }
+  }
+
+  void _handleNavigateToAuth(
+    RegistrationNavigateToAuthEvent event,
+    Emitter<RegistrationState> emit,
+  ) {
+    print('RegistrationBloc: Handling navigate to auth event');
+    emit(RegistrationNavigateToAuth());
+    print('RegistrationBloc: Emitted RegistrationNavigateToAuth state');
   }
 }

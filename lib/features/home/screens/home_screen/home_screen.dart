@@ -3,11 +3,14 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kptube_mobile/core/di/injection.dart';
+import 'package:kptube_mobile/features/auth/bloc/auth_bloc.dart';
+import 'package:kptube_mobile/features/auth/screens/auth_screen/auth_screen.dart';
 import 'package:kptube_mobile/features/home/widgets/bottom_navigation_bar/bottom_navigation_bar.dart';
 import 'package:kptube_mobile/features/main/bloc/main_bloc.dart';
 import 'package:kptube_mobile/features/main/screens/main_screen/main_screen.dart';
 import 'package:kptube_mobile/features/profile/bloc/profile_bloc.dart';
 import 'package:kptube_mobile/features/profile/screens/profile_screen/profile_screen.dart';
+import 'package:kptube_mobile/features/registration/bloc/registration_bloc.dart';
 import 'package:kptube_mobile/features/registration/screens/registration_screen/registration_screen.dart';
 import 'package:kptube_mobile/core/routing/app_router.dart';
 import 'package:kptube_mobile/features/video/screens/video_screen/video_screen.dart';
@@ -61,13 +64,19 @@ class _HomeScreenState extends State<HomeScreen> {
             } else {
               return const MainScreen();
             }
-            return const MainScreen();
           },
         );
       case 1:
         return const Center(child: Text('3'));
       case 2:
-        return BlocBuilder<ProfileBloc, ProfileState>(
+        return BlocConsumer<ProfileBloc, ProfileState>(
+          listener: (context, state) {
+            if (state is ProfileVideoTapState) {
+              BlocProvider.of<VideoBloc>(
+                context,
+              ).add(GetVideoEvent(Video_ID: state.Video_ID));
+            }
+          },
           builder: (context, state) {
             print('Current ProfileState: $state');
             if (state is ProfileVideoTapState) {
@@ -80,6 +89,10 @@ class _HomeScreenState extends State<HomeScreen> {
               return const Center(child: CircularProgressIndicator());
             } else if (state is ProfileFailed) {
               return const RegistrationScreen();
+            } else if (state is ProfileNavigateToRegistration) {
+              return const RegistrationScreen();
+            } else if (state is ProfileNavigateToAuth) {
+              return const AuthScreen();
             } else {
               return const Center(child: CircularProgressIndicator());
             }

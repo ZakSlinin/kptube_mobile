@@ -6,6 +6,7 @@ import 'package:kptube_mobile/features/auth/data/repositories/abstract_auth_repo
 import 'package:kptube_mobile/features/main/bloc/main_bloc.dart';
 import 'package:kptube_mobile/features/main/data/repositories/abstract_main_repository.dart';
 import 'package:kptube_mobile/features/registration/bloc/registration_bloc.dart';
+import 'package:kptube_mobile/features/registration/data/repositories/abstract_registration_repository.dart';
 import 'package:kptube_mobile/features/video/bloc/video_bloc.dart';
 
 import 'core/app/kptube_mobile_app.dart';
@@ -16,7 +17,11 @@ void main() {
   runApp(
     MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => RegistrationBloc()),
+        BlocProvider(
+          create:
+              (context) =>
+                  RegistrationBloc(getIt<AbstractRegistrationRepository>()),
+        ),
         BlocProvider(
           create:
               (context) =>

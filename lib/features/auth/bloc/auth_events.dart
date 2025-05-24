@@ -8,3 +8,5 @@ class AuthUserEvent extends AuthEvent {
 
   AuthUserEvent(this.name, this.password);
 }
+
+class AuthNavigateToRegistrationEvent extends AuthEvent {}

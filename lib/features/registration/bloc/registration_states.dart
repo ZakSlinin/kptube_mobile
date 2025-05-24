@@ -13,3 +13,5 @@ class RegistrationFailed extends RegistrationState {
 
   RegistrationFailed({required this.error});
 }
+
+class RegistrationNavigateToAuth extends RegistrationState {}

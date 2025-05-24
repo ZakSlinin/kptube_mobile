@@ -8,6 +8,8 @@ import 'package:kptube_mobile/features/profile/bloc/profile_bloc.dart';
 import 'package:kptube_mobile/core/models/video/video.dart';
 import 'package:kptube_mobile/features/video/bloc/video_bloc.dart';
 import 'package:kptube_mobile/core/routing/app_router.dart';
+import 'package:kptube_mobile/features/registration/screens/registration_screen/registration_screen.dart';
+import 'package:kptube_mobile/features/auth/screens/auth_screen/auth_screen.dart';
 
 @RoutePage()
 class ProfileScreen extends StatefulWidget {
@@ -110,7 +112,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                         height: 200,
                         width: double.infinity,
                         fit: BoxFit.cover,
-
                         loadingBuilder: (context, child, loadingProgress) {
                           if (loadingProgress == null) return child;
                           return Container(
@@ -255,21 +256,15 @@ class _ProfileScreenState extends State<ProfileScreen>
           }
 
           if (state is ProfileFailed) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('Ошибка загрузки профиля'),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      context.read<ProfileBloc>().add(GetProfileEvent());
-                    },
-                    child: const Text('Повторить'),
-                  ),
-                ],
-              ),
-            );
+            return const RegistrationScreen();
+          }
+
+          if (state is ProfileNavigateToRegistration) {
+            return const RegistrationScreen();
+          }
+
+          if (state is ProfileNavigateToAuth) {
+            return const AuthScreen();
           }
 
           return const Center(child: CircularProgressIndicator());

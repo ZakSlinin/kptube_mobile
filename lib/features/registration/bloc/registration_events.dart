@@ -19,3 +19,5 @@ class RegisterUserEvent extends RegistrationEvent {
     this.User_ID,
   );
 }
+
+class RegistrationNavigateToAuthEvent extends RegistrationEvent {}

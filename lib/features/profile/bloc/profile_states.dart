@@ -1,6 +1,6 @@
 part of 'profile_bloc.dart';
 
-class ProfileState {}
+abstract class ProfileState {}
 
 class ProfileInitial extends ProfileState {}
 
@@ -40,3 +40,7 @@ class ProfileVideoTapState extends ProfileState {
 }
 
 class ProfileNavigateBackState extends ProfileState {}
+
+class ProfileNavigateToRegistration extends ProfileState {}
+
+class ProfileNavigateToAuth extends ProfileState {}

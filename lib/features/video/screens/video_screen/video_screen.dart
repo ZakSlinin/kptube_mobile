@@ -84,7 +84,6 @@ class _VideoScreenState extends State<VideoScreen> {
         betterPlayerConfiguration,
       );
 
-      // Add event listener for debugging
       _betterPlayerController!.addEventsListener((event) {
         print('BetterPlayer event: ${event.betterPlayerEventType}');
         if (event.betterPlayerEventType == BetterPlayerEventType.exception) {
