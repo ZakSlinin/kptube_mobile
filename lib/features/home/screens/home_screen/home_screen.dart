@@ -59,11 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
       case 0:
         return BlocBuilder<MainBloc, MainState>(
           builder: (context, state) {
-            if (state is MainVideoTap) {
-              return const VideoScreen();
-            } else {
-              return const MainScreen();
-            }
+            return state is MainVideoTap
+                ? const VideoScreen()
+                : const MainScreen();
           },
         );
       case 1:
@@ -72,30 +70,32 @@ class _HomeScreenState extends State<HomeScreen> {
         return BlocConsumer<ProfileBloc, ProfileState>(
           listener: (context, state) {
             if (state is ProfileVideoTapState) {
-              BlocProvider.of<VideoBloc>(
-                context,
-              ).add(GetVideoEvent(Video_ID: state.Video_ID));
+              context.read<VideoBloc>().add(
+                GetVideoEvent(Video_ID: state.Video_ID),
+              );
             }
           },
           builder: (context, state) {
-            print('Current ProfileState: $state');
             if (state is ProfileVideoTapState) {
               return const VideoScreen();
-            } else if (state is ProfileNavigateBackState) {
-              return const ProfileScreen();
-            } else if (state is ProfileGetSuccess || state is ProfileLoading) {
-              return const ProfileScreen();
-            } else if (state is ProfileLoading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is ProfileFailed) {
-              return const RegistrationScreen();
-            } else if (state is ProfileNavigateToRegistration) {
-              return const RegistrationScreen();
-            } else if (state is ProfileNavigateToAuth) {
-              return const AuthScreen();
-            } else {
-              return const Center(child: CircularProgressIndicator());
             }
+
+            if (state is ProfileNavigateToAuth) {
+              return const AuthScreen();
+            }
+
+            if (state is ProfileNavigateToRegistration ||
+                state is ProfileFailed) {
+              return const RegistrationScreen();
+            }
+
+            if (state is ProfileNavigateBackState ||
+                state is ProfileGetSuccess ||
+                state is ProfileLoading) {
+              return const ProfileScreen();
+            }
+
+            return const Center(child: CircularProgressIndicator());
           },
         );
       default:
