@@ -71,6 +71,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       await prefs.clear();
 
       emit(ProfileLeaveSuccess());
+      emit(ProfileNavigateToRegistration());
     } catch (e) {
       emit(ProfileLeaveFailed());
     }
