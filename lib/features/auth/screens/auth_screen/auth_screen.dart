@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:kptube_mobile/core/di/injection.dart';
 import 'package:kptube_mobile/features/auth/bloc/auth_bloc.dart';
-import 'package:kptube_mobile/features/registration/screens/registration_screen/registration_screen.dart';
 import 'package:kptube_mobile/core/routing/app_router.dart';
 import 'package:kptube_mobile/features/profile/bloc/profile_bloc.dart';
 
@@ -19,6 +18,15 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  late final AuthBloc _authBloc;
+  late final ProfileBloc _profileBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _authBloc = getIt<AuthBloc>();
+    _profileBloc = getIt<ProfileBloc>();
+  }
 
   @override
   void dispose() {
@@ -29,16 +37,16 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return BlocProvider(
-      create: (context) => getIt<AuthBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider.value(value: _authBloc),
+        BlocProvider.value(value: _profileBloc),
+      ],
       child: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (!mounted) return;
-
           if (state is AuthSuccess) {
-            context.router.replace(const HomeRoute());
+            context.read<ProfileBloc>().add(GetProfileEvent());
           } else if (state is AuthFailed) {
             ScaffoldMessenger.of(
               context,
@@ -101,8 +109,7 @@ class _AuthScreenState extends State<AuthScreen> {
                           state is AuthLoading
                               ? null
                               : () {
-                                if (!mounted) return;
-                                context.read<AuthBloc>().add(
+                                _authBloc.add(
                                   AuthUserEvent(
                                     _nameController.text,
                                     _passwordController.text,
@@ -125,7 +132,7 @@ class _AuthScreenState extends State<AuthScreen> {
                       InkWell(
                         onTap: () {
                           if (!mounted) return;
-                          context.read<ProfileBloc>().add(
+                          _profileBloc.add(
                             ProfileNavigateToRegistrationEvent(),
                           );
                         },
