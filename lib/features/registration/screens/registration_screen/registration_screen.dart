@@ -79,7 +79,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
           if (state is RegistrationSuccess) {
             print('RegistrationScreen: Navigating to HomeRoute');
-            context.router.replace(const HomeRoute());
+            context.read<ProfileBloc>().add(GetProfileEvent());
           } else if (state is RegistrationFailed) {
             print('RegistrationScreen: Showing error: ${state.error}');
             ScaffoldMessenger.of(
