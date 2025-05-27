@@ -110,7 +110,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               context: context,
                               builder:
                                   (context) => AlertDialog(
-                                    title: const Text('Выберите источник'),
+                                    title: const Text('Выберите источник, не выбирайте формат xml или .svg'),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {
