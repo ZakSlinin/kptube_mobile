@@ -11,3 +11,8 @@ class VideoTap extends MainEvent {
 }
 
 class NavigateToHomeEvent extends MainEvent {}
+
+class SearchVideosEvent extends MainEvent {
+  final String query;
+  SearchVideosEvent({required this.query});
+}

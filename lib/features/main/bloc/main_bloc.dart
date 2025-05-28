@@ -7,11 +7,13 @@ part 'main_states.dart';
 
 class MainBloc extends Bloc<MainEvent, MainState> {
   final AbstractMainRepository mainRepository;
+  List<VideoPreview> _allVideos = [];
 
   MainBloc({required this.mainRepository}) : super(MainInitial()) {
     on<GetMainEvent>(_onGetMain);
     on<VideoTap>(_onVideoTap);
     on<NavigateToHomeEvent>(_onNavigateToHome);
+    on<SearchVideosEvent>(_onSearchVideos);
   }
 
   Future<void> _onGetMain(GetMainEvent event, Emitter<MainState> emit) async {
@@ -20,21 +22,20 @@ class MainBloc extends Bloc<MainEvent, MainState> {
       emit(MainLoading());
 
       print('MainBloc: Calling repository to get videos...');
-      final videos = await mainRepository.getVideosMain();
-      print('MainBloc: Received ${videos.length} videos from repository');
+      _allVideos = await mainRepository.getVideosMain();
+      print('MainBloc: Received ${_allVideos.length} videos from repository');
 
-      if (videos.isEmpty) {
+      if (_allVideos.isEmpty) {
         print('MainBloc: No videos received from repository');
       } else {
         print('MainBloc: First video details:');
-        print('- Owner: ${videos.first.owner}');
-        print('- Name: ${videos.first.name}');
-        print('- Preview URL: ${videos.first.preview}');
+        print('- Owner: ${_allVideos.first.owner}');
+        print('- Name: ${_allVideos.first.name}');
+        print('- Preview URL: ${_allVideos.first.preview}');
       }
 
-      videos.shuffle();
-
-      emit(MainSuccess(videos));
+      _allVideos.shuffle();
+      emit(MainSuccess(_allVideos));
       print('MainBloc: Emitted MainSuccess state');
     } catch (e, stackTrace) {
       print('MainBloc: Failed to load videos');
@@ -56,5 +57,23 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   void _onNavigateToHome(NavigateToHomeEvent event, Emitter<MainState> emit) {
     emit(MainNavigateToHome());
+  }
+
+  void _onSearchVideos(SearchVideosEvent event, Emitter<MainState> emit) {
+    if (event.query.isEmpty) {
+      emit(MainSuccess(_allVideos));
+      return;
+    }
+
+    final searchResults =
+        _allVideos.where((video) {
+          final name = video.name?.toLowerCase() ?? '';
+          final owner = video.owner?.toLowerCase() ?? '';
+          final query = event.query.toLowerCase();
+
+          return name.contains(query) || owner.contains(query);
+        }).toList();
+
+    emit(MainSuccess(searchResults));
   }
 }
