@@ -84,6 +84,7 @@ flutter:
     - assets/svg/User.svg
     - assets/svg/Add_avatar.svg
     - assets/svg/Add_header.svg
+    - assets/svg/Search.svg
 
 
   # To add assets to your application, add an assets section, like this:
